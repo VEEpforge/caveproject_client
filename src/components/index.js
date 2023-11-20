@@ -1,9 +1,11 @@
 import Navbar from './Navbar';
-import Hero from './Hero'
-import Footer from './Footer'
+import Menu from './Menu';
+import StrainForm from './StrainForm';
+import Spinner from './Spinner';
 
 export {
     Navbar,
-    Hero,
-    Footer
+    Menu,
+    StrainForm,
+    Spinner
 };

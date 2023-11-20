@@ -1,0 +1,313 @@
+#Indoor Air
+#Outdoor Air
+#Brackish
+#Cave water
+#Coral reef
+#Estuary
+#Foam
+#Freshwater
+#Geologic
+#Groundwater
+#Hydrothermal vent
+#Ice
+#Lake (large)
+#Mangrove
+#Marine
+#Non-marine Saline and Alkaline
+#Pond (small)
+#River (Creek)
+#Sediment
+#Spring
+#Surface water
+#Thermal spring
+#Iron mat
+#Bacteriome
+#Co-culture
+#Decomposing algae
+#Decomposing fungi
+#Microbial mat
+#Coast
+#Core sample
+#Desert
+#Dust
+#Forest
+#Geologic
+#Glacier
+#Grassland
+#Mud (Sludge)
+#Permafrost
+#Salt marsh
+#Sandy
+#Sediment
+#Soil
+#Tidal flat
+#Tundra
+#Volcanic
+#Wetland (Swamp)
+#Field
+#Garden
+#Greenhouse
+#Grove (Orchard)
+#Livestock (Husbandry)
+#Meadow
+#Paddy (Ricefield)
+#Park (City)
+#Plantation
+#Vineyard
+#Anaerobic digestor
+#Composting
+#Decomposing material
+#Garden dump
+#Biofilter
+#Ex situ
+#In situ
+#Air conditioner
+#Animal habitation (Nest,Burrow)
+#City
+#Clean room
+#Container (Reservoir)
+#House
+#Indoor
+#Surface swab
+#Transportation ways (Roads)
+#Water reservoir (Aquarium/pool)
+#Heavy metal
+#Oil (Fuel)
+#Pesticide
+#Animal feed
+#Aquaculture
+#Beverage
+#Bottled, canned, packed food
+#Dairy product
+#Egg
+#Fermented
+#Food
+#Meat
+#Oil (Food)
+#Seafood
+#Spoiled
+#Starter culture
+#Sugary food
+#Vegetable (incl. Grains)
+#Cooling tower
+#Engineered product
+#Industrial production
+#Machines and devices
+#Oil reservoir
+#Plant (Factory)
+#Contaminant
+#Defined media
+#Lab enrichment
+#Lab synthesis
+#Simulated communities
+#Currency
+#Mine
+#Painting
+#Frozen
+#Heated (Burned)
+#Preserved
+#Sterilized (Desinfected)
+#Activated sludge
+#Coalbed water
+#Domestic waste
+#Dust (Ash)
+#Industrial waste
+#Industrial wastewater
+#Landfill
+#Sewage sludge
+#Solid animal waste
+#Solid plant waste
+#Solid waste
+#Waste gas
+#Wastewater
+#Water treatment plant
+#Brown Algae
+#Green algae
+#Red algae
+#Crustacea
+#Insecta
+#Tick
+#Chicken
+#Salmonidae
+#Zebrafish
+#Mushroom
+#Mycelium
+#Mycorrhiza
+#Rot fungi
+#Slime mold
+#Symbiotic fungal garden and gallery
+#Child
+#Female
+#Male
+#Annelida
+#Cnidaria (Corals)
+#Echinodermata
+#Mollusca
+#Nematoda
+#Porifera (Sponges)
+#Tunicata
+#Aquatic mammal
+#Bovinae (Cow, Cattle)
+#Canidae (Dog)
+#Caprinae (Sheep/Goat)
+#Equidae (Horse)
+#Felidae (Cat)
+#Leporidae (Rabbit/Hare)
+#Muridae (Mouse/Rat)
+#Primates
+#Rodentia (Other)
+#Suidae (Pig,Swine)
+#Bacteria
+#Oomycota (Water moulds)
+#Phytoplankton
+#Viriome
+#Zooplankton
+#Decomposing animal
+#Ectosymbiont
+#Endosymbiont
+#Epibiont
+#Extracellular
+#Intracellular
+#Lichen
+#Parasite
+#Aquatic plant
+#Decomposing plant
+#Herbaceous plants (Grass,Crops)
+#Liana (Vine)
+#Moss
+#Peat moss
+#Shrub (Scrub)
+#Tree
+#Xerophytic
+#Dinoflagellate
+#Protist
+#Large intestine
+#Rectum
+#Small intestine
+#Stomach
+#Ankle
+#Arm
+#Foot
+#Hand
+#Joint
+#Leg
+#Airways
+#Gingiva
+#Lung
+#Mouth
+#Periodontal pocket
+#Plaque
+#Root (Tooth)
+#Subgingival plaque
+#Throat
+#Tooth
+#Trachea
+#Brain
+#Ear
+#Eye
+#Heart
+#Liver
+#Lymph node
+#Mammary gland
+#Nose
+#Rumen
+#Skin, Nail, Hair
+#Spinal Cord
+#Spleen
+#Vascular system
+#Abdomen
+#Abscess
+#Bone
+#Head
+#Thoracic segment
+#Torso
+#Wound
+#Bark
+#Endosphere
+#Flower
+#Fruit (Seed)
+#Leaf (Phyllosphere)
+#Phylloplane
+#Rhizoplane
+#Rhizosphere
+#Root (Rhizome)
+#Root nodule
+#Stem (Branch)
+#Sterilized plant part
+#Bladder
+#Kidney
+#Nephridium
+#Ovary
+#Urethra
+#Vagina
+#Aspirate
+#Blood
+#Cerebrospinal fluid
+#Furuncle fluid
+#Milk
+#Rumen fluid
+#Sputum
+#Synovial fluid
+#Urine
+#Wound fluid
+#Caecal content
+#Feces (Stool)
+#Vomit
+#Bronchial wash
+#Dental plaque
+#Mucus
+#Nasopharyngeal aspirate
+#Phlegm
+#Pleural fluid
+#Saliva
+#Tracheal aspirate
+#Animal produced food (natural)
+#Cotton (other fibres)
+#Digestive fluid
+#Juice (natural)
+#Nectar
+#Plant exudate (Resin)
+#Plant litter (Forest)
+#Plant sap (Flux)
+#Pollen
+#Straw
+#Timber
+#Abort
+#Amniotic fluid
+#Bladder stone
+#Egg
+#Semen
+#Vaginal secretion
+#Cystic fibrosis
+#Meningitis
+#Mycosis
+#Post mortem
+#Tuberculosis
+#Catheter
+#Heart valve
+#Clinic
+#Medical practice
+#Antibiotic treatment
+#Biopsy
+#Blood culture
+#Immunocompromised
+#Specimen
+#Swab
+#Canker
+#Coloration/Discoloration
+#Deformation (Broom)
+#Gall
+#Lesion (incl. Necrosis)
+#Rot (Root,Stem)
+#Spot (Leaf,Stem)
+#Wilt
+#Alpine
+#Polar
+#Subarctic
+#Tundra
+#Arid
+#Semiarid
+#Tropical
+#Boreal
+#Continental
+#Subtropical

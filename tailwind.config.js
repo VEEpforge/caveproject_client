@@ -1,17 +1,20 @@
 /** @type {import('tailwindcss').Config} */
+
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
   content: ["./index.html", "./src/**/*.{js,jsx}"],
   mode: "jit",
   theme: {
     extend: {
       colors: {
-        primary: "#5D781B",
-        secondary: "#00f6ff",
-        dimWhite: "rgba(255, 255, 255, 0.7)",
-        dimBlue: "rgba(9, 151, 124, 0.1)",
+        primary: "#005740",
+        dimBlack: "#0D0C22",
+        dimWhite: "#F5FAFF",
       },
       fontFamily: {
-        poppins: ["Poppins", "sans-serif"],
+        // poppins: ["Poppins", "sans-serif"],
+        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
     },
     screens: {
@@ -23,5 +26,7 @@ module.exports = {
       xl: "1700px",
     },
   },
-  plugins: [],
+  plugins: [
+    require("@tailwindcss/forms"),
+  ],
 };
