@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import axios from 'axios'
+import axios from '../../api/axios'
 
 import Logo from '../../assets/logo.png'
+
+const LOGIN_URL = '/users/login'
+
 
 const Login = () => {
   const [data, setData] = useState({
@@ -31,7 +34,7 @@ const Login = () => {
     }
 
     try {
-      const {data} = await axios.post('/api/users/login', userData)
+      const {data} = await axios.post(LOGIN_URL, userData)
 
       if(data.error) {
         toast.error(data.error)

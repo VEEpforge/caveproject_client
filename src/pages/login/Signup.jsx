@@ -5,19 +5,20 @@ import axios from '../../api/axios'
 
 import Logo from '../../assets/logo.png'
 
-const REGISTER_URL = '/api/users'
+const REGISTER_URL = '/users'
 
 const Signup = () => {
   const [ data, setData ] = useState({
     name: '',
     email: '',
     password: '',
+    confirm_password: '',
     institution: '',
     address: '',
-    user_level: 'ADMIN'
+    user_level: 'ADMIN' // set as default if not changed
   })
 
-  const { name, email, password, institution, address, user_level } = data
+  const { name, email, password, confirm_password, institution, address, user_level } = data
 
   const navigate = useNavigate()
 
@@ -40,18 +41,23 @@ const Signup = () => {
       user_level,
     }
 
-    try {
-      const {data} = await axios.post(REGISTER_URL, userData)
+    if(password != confirm_password) {
+      toast.error('Passwords do not match')
+    } else {
+      try {
+        const {data} = await axios.post(REGISTER_URL, userData)
 
-      if(data.error) {
-        toast.error(data.error)
-      } else {
-        setData({})
-        toast.success('Sign up successful. Welcome!')
-        navigate('/')
+        if(data.error) {
+          toast.error(data.error)
+          // toast.error(error?.data?.message || error.error)
+        } else {
+          setData({})
+          toast.success('Sign up successful. Welcome!')
+          navigate('/login')
+        }
+      } catch (error) {
+        console.log(error)
       }
-    } catch (error) {
-      console.log(error)
     }
   }
 
@@ -63,6 +69,7 @@ const Signup = () => {
       </div> */}
 			
       <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 Inter'>
+        
         <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
           <Link to='/' >
             <img
@@ -176,6 +183,26 @@ const Signup = () => {
 
             <div>
               <div className='flex items-center justify-between'>
+                <label htmlFor='password' className='block text-sm font-medium leading-6 text-dimBlack'>
+                  Confirm Password
+                </label>
+              </div>
+              <div className='mt-1'>
+                <input
+                  id='confirm_password'
+                  name='confirm_password'
+                  type='password'
+                  value={confirm_password}
+                  placeholder='At least 8 characters'
+                  onChange={onChange}
+                  required
+                  className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className='flex items-center justify-between'>
                 <label htmlFor='user_level' className='block text-sm font-medium leading-6 text-dimBlack'>
                   User level
                 </label>
@@ -184,8 +211,8 @@ const Signup = () => {
                 <select
                   id='user_level'
                   name='user_level'
-                  onChange={onChange}
                   value={user_level}
+                  onChange={onChange}
                   required
                   className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary sm:max-w-xs sm:text-sm sm:leading-6'
                 >
