@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { useLoginMutation } from '../../features/user/userSlice'
+import { setCredentials } from '../../features/auth/authSlice'
 import { toast } from 'react-toastify'
-import axios from '../../api/axios'
-
 import Logo from '../../assets/logo.png'
-
-const LOGIN_URL = '/users/login'
-
+import { Spinner } from '../../components/index'
 
 const Login = () => {
   const [data, setData] = useState({
@@ -16,14 +15,25 @@ const Login = () => {
 
   const { email, password } = data
 
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const [ login, { isLoading } ] = useLoginMutation()
+
+  const { user } = useSelector((state) => state.auth)
+
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [ navigate, user ])
+
   const onChange = (e) => {
     setData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }))
   }
-
-  const navigate = useNavigate()
 
   const onSubmit = async (e) => {
     e.preventDefault()
@@ -34,17 +44,13 @@ const Login = () => {
     }
 
     try {
-      const {data} = await axios.post(LOGIN_URL, userData)
-
-      if(data.error) {
-        toast.error(data.error)
-      } else {
-        setData({})
-        toast.success('Log in successful. Welcome back!')
-        navigate('/')
-      }
+      const {data} = await login(userData).unwrap()
+      dispatch(setCredentials(data))
+      setData({})
+      toast.success('Log in successful. Welcome back!')
+      navigate('/')
     } catch (error) {
-      console.log(error)
+      toast.error(error)
     }
   }
 
@@ -120,6 +126,8 @@ const Login = () => {
               </button>
             </div>
           </form>
+
+          { isLoading && <Spinner /> }
 
           <p className='mt-10 mb-2 text-center text-sm text-dimBlack'>
             Not a member?{' '}

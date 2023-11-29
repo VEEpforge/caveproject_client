@@ -1,7 +1,10 @@
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { useLogoutMutation } from '../features/user/userSlice'
+import { logout } from '../features/auth/authSlice'
 import Logo from '../assets/logo.png'
 
 
@@ -17,11 +20,28 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+  const { user } = useSelector((state) => state.auth)
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const [ logoutCall ] = useLogoutMutation()
+
+  const logoutHandler = async () => {
+    try {
+      await logoutCall().unwrap();
+      dispatch(logout());
+      navigate('/');
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   return (
     <Disclosure as="nav" className="bg-transparent">
       {({ open }) => (
         <>
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                 {/* Mobile menu button*/}
@@ -36,11 +56,13 @@ export default function Navbar() {
               </div>
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
-                  <img
-                    className="h-8 w-auto"
-                    src={Logo}
-                    alt="Logo"
-                  />
+                  <Link to='/'>
+                    <img
+                      className="h-8 w-auto"
+                      src={Logo}
+                      alt="Logo"
+                    />
+                  </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
@@ -49,7 +71,7 @@ export default function Navbar() {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-dimBlack hover:bg-primary hover:text-white',
+                          item.current ? 'bg-gray-900 text-white' : 'text-dimBlack hover:text-primary',
                           'rounded-md px-3 py-2 text-sm font-medium'
                         )}
                         // aria-current={item.current ? 'page' : true}
@@ -128,22 +150,35 @@ export default function Navbar() {
                 </Menu>
               </div>
               */}
-              <div className='hidden sm:ml-6 sm:block'>
-              <Link
-                to='/signup'
-                type="button"
-                className="inline-flex items-center rounded-md bg-transparent mr-2 px-3 py-2 text-sm font-semibold text-dimBlack shadow-sm hover:bg-dimBlack hover:text-dimWhite focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Sign up
-              </Link>
-              </div>
-              <Link
-                to='/login'
-                type="button"
-                className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-dimBlack focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                Log in  <span aria-hidden="true"> &rarr;</span>
-              </Link>
+              { user ? (
+                <Link
+                  to='/'
+                  type="button"
+                  onClick={logoutHandler}
+                  className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-dimBlack focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  Log out  <span aria-hidden="true"> &rarr;</span>
+                </Link>
+              ) : (
+                <>
+                  <div className='hidden sm:ml-6 sm:block'>
+                    <Link
+                      to='/signup'
+                      type="button"
+                      className="inline-flex items-center rounded-md bg-transparent mr-2 px-3 py-2 text-sm font-semibold text-dimBlack shadow-sm hover:bg-dimBlack hover:text-dimWhite focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                      Sign up
+                    </Link>
+                  </div>
+                  <Link
+                    to='/login'
+                    type="button"
+                    className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-dimBlack focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Log in  <span aria-hidden="true"> &rarr;</span>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
 

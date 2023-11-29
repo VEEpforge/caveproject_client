@@ -7,5 +7,5 @@ export {
     Navbar,
     Menu,
     StrainForm,
-    Spinner
+    Spinner,
 };

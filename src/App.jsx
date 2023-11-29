@@ -6,6 +6,7 @@ import Login from './pages/login/Login';
 import Signup from './pages/login/Signup';
 import AddStrain from './pages/strain/AddStrain';
 import IsolationSource from './pages/isolation/IsolationSource';
+import { Spinner } from './components';
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
             <Route path='/login' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
             <Route path='/isolation-source' element={<IsolationSource />} />
+            <Route path='/spinner' element={<Spinner />} />
 
             {/* Admin/Collection/Profile */}
             <Route path='/add-strain' element={<AddStrain />} />

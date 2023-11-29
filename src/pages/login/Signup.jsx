@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { useRegisterMutation } from '../../features/user/userSlice'
+import { setCredentials } from '../../features/auth/authSlice'
 import { toast } from 'react-toastify'
-import axios from '../../api/axios'
-
 import Logo from '../../assets/logo.png'
+import { Spinner } from '../../components/index'
 
 const REGISTER_URL = '/users'
 
@@ -21,6 +23,17 @@ const Signup = () => {
   const { name, email, password, confirm_password, institution, address, user_level } = data
 
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const [ register, { isLoading } ] = useRegisterMutation()
+
+  const { user } = useSelector((state) => state.auth)
+
+  useEffect( () => {
+    if(user) {
+      navigate('/login')
+    }
+  }, [ navigate, user ])
 
   const onChange = (e) => {
     setData((prevState) => ({
@@ -45,18 +58,14 @@ const Signup = () => {
       toast.error('Passwords do not match')
     } else {
       try {
-        const {data} = await axios.post(REGISTER_URL, userData)
-
-        if(data.error) {
-          toast.error(data.error)
-          // toast.error(error?.data?.message || error.error)
-        } else {
-          setData({})
-          toast.success('Sign up successful. Welcome!')
-          navigate('/login')
-        }
+        const {data} = await register(userData).unwrap()
+        dispatch(setCredentials(data))
+        setData({})
+        toast.success('Sign up successful. Welcome!')
+        navigate('/login')
+        
       } catch (error) {
-        console.log(error)
+        toast.error( error?.data?.message || error.error || error )
       }
     }
   }
@@ -225,12 +234,15 @@ const Signup = () => {
             <div>
               <button
                 type='submit'
+                disabled={isLoading}
                 className='flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-dimBlack focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
               >
                 Sign up
               </button>
             </div>
           </form>
+
+          { isLoading && <Spinner /> }
 
           <p className='mt-10 mb-2 text-center text-sm text-dimBlack'>
             Already have an account?{' '}
