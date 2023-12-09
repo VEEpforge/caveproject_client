@@ -3,13 +3,13 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLogoutMutation } from '../features/user/userSlice'
+// import { useLogoutMutation } from '../features/user/userSlice'
 import { logout } from '../features/auth/authSlice'
-import Logo from '../assets/logo.png'
+import Logo from '../assets/logo.svg'
 
 
 const navigation = [
-  { name: 'Home', href: '/', current: true },
+  { name: 'Home', href: '/', current: false },
   { name: 'Taxonomy', href: '#', current: false },
   { name: 'Isolation source', href: '/isolation-source', current: false },
   { name: 'About', href: '#', current: false },
@@ -25,11 +25,13 @@ export default function Navbar() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [ logoutCall ] = useLogoutMutation()
+  // const [ logoutCall ] = useLogoutMutation()
 
-  const logoutHandler = async () => {
+  const onLogout = async (e) => {
+    e.preventDefault()
+    
     try {
-      await logoutCall().unwrap();
+      // await logoutCall().unwrap();
       dispatch(logout());
       navigate('/');
     } catch (err) {
@@ -72,7 +74,7 @@ export default function Navbar() {
                         href={item.href}
                         className={classNames(
                           item.current ? 'bg-gray-900 text-white' : 'text-dimBlack hover:text-primary',
-                          'rounded-md px-3 py-2 text-sm font-medium'
+                          'rounded-md px-3 py-2 text-md font-semibold'
                         )}
                         // aria-current={item.current ? 'page' : true}
                         aria-current = 'page'
@@ -151,14 +153,17 @@ export default function Navbar() {
               </div>
               */}
               { user ? (
+                <>
+                <h3>{user.name}</h3>
                 <Link
                   to='/'
                   type="button"
-                  onClick={logoutHandler}
+                  onClick={onLogout}
                   className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-dimBlack focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   Log out  <span aria-hidden="true"> &rarr;</span>
                 </Link>
+                </>
               ) : (
                 <>
                   <div className='hidden sm:ml-6 sm:block'>

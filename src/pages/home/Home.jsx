@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <div className='w-full overflow-hidden'>
 
-      <div className={` ${styles.flexCenter}`}>
+      <div className={` ${styles.flexCenter} sticky`}>
         <div className={`${styles.boxWidth}`}>
           <Navbar />
         </div>

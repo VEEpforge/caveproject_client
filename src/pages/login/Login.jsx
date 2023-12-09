@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLoginMutation } from '../../features/user/userSlice'
-import { setCredentials } from '../../features/auth/authSlice'
 import { toast } from 'react-toastify'
-import Logo from '../../assets/logo.png'
+import { login, reset } from '../../features/auth/authSlice'
+import Logo from '../../assets/logo.svg'
 import { Spinner } from '../../components/index'
 
 const Login = () => {
@@ -18,15 +17,23 @@ const Login = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [ login, { isLoading } ] = useLoginMutation()
-
-  const { user } = useSelector((state) => state.auth)
+  const { user, loading, error } = useSelector( (state) => state.auth )
 
   useEffect(() => {
-    if (user) {
-      navigate('/');
+    if (error) {
+      toast.error(error)
     }
-  }, [ navigate, user ])
+    if (user) {
+      setData({})
+      navigate('/')
+      toast.success('Welcome back!')
+    }
+    if (loading) {
+      <Spinner />
+    }
+
+    dispatch(reset)
+  }, [ user, loading, error, navigate, dispatch ])
 
   const onChange = (e) => {
     setData((prevState) => ({
@@ -44,11 +51,7 @@ const Login = () => {
     }
 
     try {
-      const {data} = await login(userData).unwrap()
-      dispatch(setCredentials(data))
-      setData({})
-      toast.success('Log in successful. Welcome back!')
-      navigate('/')
+      dispatch(login(userData))
     } catch (error) {
       toast.error(error)
     }
@@ -122,12 +125,13 @@ const Login = () => {
                 type='submit'
                 className='flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-dimBlack focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
               >
-                Login
+                {/* {loading ? 'Loading...' : 'Login'} */}
+                Log in
               </button>
             </div>
           </form>
 
-          { isLoading && <Spinner /> }
+          {/* { isLoading && <Spinner /> } */}
 
           <p className='mt-10 mb-2 text-center text-sm text-dimBlack'>
             Not a member?{' '}
