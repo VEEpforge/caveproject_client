@@ -1,40 +1,48 @@
 export const category_1 = [
   {
+		id: 1,
   	name: 'Environmental',
 		cat1_code: '1',
 		color_code: 'bg-green-300'
   },
 	{
+		id: 2,
   	name: 'Engineered',
 		cat1_code: '2',
 		color_code: 'bg-blue-300'
   },
 	{
+		id: 3,
   	name: 'Host',
 		cat1_code: '3',
 		color_code: 'bg-orange-300'
   },
 	{
+		id: 4,
   	name: 'Host Body-Site',
 		cat1_code: '4',
 		color_code: 'bg-purple-300'
   },
 	{
+		id: 5,
   	name: 'Host Body Product',
 		cat1_code: '5',
 		color_code: 'bg-teal-300'
   },
 	{
+		id: 6,
   	name: 'Infection',
 		cat1_code: '6',
 		color_code: 'bg-red-300'
   },
 	{
+		id: 7,
   	name: 'Condition',
 		cat1_code: '7',
 		color_code: 'bg-yellow-300'
   },
 	{
+		id: 8,
   	name: 'Climate',
 		cat1_code: '8',
 		color_code: 'bg-gray-300'

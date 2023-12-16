@@ -1,312 +1,454 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { category_1, category_2, category_3 } from '../constants/miso'
+import { addStrain,reset } from '../features/strain/strainSlice'
+import { Spinner } from '../components/index'
+import { toast } from 'react-toastify'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 const StrainForm = () => {
-	// const [ cat_1, setCat_1 ] = useState();
-	// const [ cat_2, setCat_2 ] = useState();
-	// const [ cat_3, setCat_3 ] = useState();
+	const { strains, loading, error } = useSelector( (state) => state.strain )
+
+	const [ data, setData ] = useState({
+		strain_name: '',
+		scientific_name: '',
+		domain: '',
+		phylum: '',
+		class_name: '',
+		order: '',
+		family: '',
+		genus: '',
+		species: '',
+		isolation_source: '',
+		sampling_site: '',
+		sampling_point: '',
+		sample_type: '',
+		host_species: '',
+		town_province: '',
+		location_abbrv: '',
+		location_latitude: 0,
+		location_longitude: 0,
+		miso_categories: [],
+	})
+
+	const {
+		strain_name,
+		scientific_name,
+		domain,
+		phylum,
+		class_name,
+		order,
+		family,
+		genus,
+		species,
+		isolation_source,
+		sampling_site,
+		sampling_point,
+		sample_type,
+		host_species,
+		town_province,
+		location_abbrv,
+		location_latitude,
+		location_longitude,
+		miso_categories,
+	} = data
+
+	const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+	useEffect(() => {
+		if (loading) {
+      <Spinner />
+    }
+    if (error) {
+      toast.error(error)
+    }
+    if (strains != []) {
+      setData({})
+			document.getElementById('strainForm').reset()
+      toast.success('Successfully added strain!')
+			navigate('/add-strain')
+    }
+		
+		dispatch(reset())
+  }, [ strains, loading, error, navigate, dispatch ])
+
+	const onChange = (e) => {
+    setData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }))
+  }
+
+	const onSubmit = async (e) => {
+    e.preventDefault()
+
+		const strainData = {
+			strain_name,
+			scientific_name,
+			domain,
+			phylum,
+			class_name,
+			order,
+			family,
+			genus,
+			species,
+			isolation_source,
+			sampling_site,
+			sampling_point,
+			sample_type,
+			host_species,
+			town_province,
+			location_abbrv,
+			location_latitude,
+			location_longitude,
+			miso_categories,
+		}
+
+		dispatch(addStrain(strainData))
+	}
 
   return (
-    <form>
-			<h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-dimBlack">
+    <form id='strainForm' onSubmit={onSubmit}>
+			<h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-primary'>
         Add Strain
       </h2>
 
-      <div className="space-y-12">
-        <div className="border-b border-gray-900/10 pb-10">
+      <div className='space-y-12'>
+        <div className='border-b border-gray-900/10 pb-10'>
 
-          <div className="space-y-12 bg-primary justify-center items-center ">
-            <h4 className="mt-10 font-bold  text-dimWhite px-2 py-2">
+          <div className='space-y-12 bg-primary justify-center items-center '>
+            <h4 className='mt-10 font-bold  text-dimWhite px-2 py-2'>
               Name and Taxonomic Classification
             </h4>
           </div>
 
-					<div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-6">
+					<div className='mt-4 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-6'>
 
-						<div className="col-span-full">
-							<label htmlFor="strain_name" className="block text-sm font-medium leading-6 text-dimBlack">
+						<div className='col-span-full'>
+							<label htmlFor='strain_name' className='block text-sm font-medium leading-6 text-dimBlack'>
 								Strain name
 							</label>
-							<div className="mt-1">
 								<input
-									type="text"
-									name="strain_name"
-									id="strain_name"
-									autoComplete="strain_name"
-									className="block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+									type='text'
+									name='strain_name'
+									id='strain_name'
+									value={strain_name}
+									onChange={onChange}
+									required
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
 								/>
-							</div>
 						</div>
 
-						<div className="col-span-full">
-							<label htmlFor="scientific_name" className="block text-sm font-medium leading-6 text-dimBlack">
+						<div className='col-span-full mt-1'>
+							<label htmlFor='scientific_name' className='block text-sm font-medium leading-6 text-dimBlack'>
 								Scientific name
 							</label>
-							<div className="mt-1">
 								<input
-									type="text"
-									name="scientific_name"
-									id="scientific_name"
-									autoComplete="scientific_name"
-									className="block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+									type='text'
+									name='scientific_name'
+									id='scientific_name'
+									value={scientific_name}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
 								/>
-							</div>
 						</div>
 
-						<div className="sm:col-span-3">
-							<label htmlFor="domain" className="block text-sm font-medium leading-6 text-dimBlack">
+						<div className='sm:col-span-3'>
+							<label htmlFor='domain' className='block text-sm font-medium leading-6 text-dimBlack'>
 								Domain
 							</label>
-							<div className="mt-1">
 								<input
-									type="text"
-									name="domain"
-									id="domain"
-									autoComplete="domain"
-									className="block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+									type='text'
+									name='domain'
+									id='domain'
+									value={domain}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
 								/>
-							</div>
 						</div>
 
-						<div className="sm:col-span-3">
-							<label htmlFor="phylum" className="block text-sm font-medium leading-6 text-dimBlack">
+						<div className='sm:col-span-3'>
+							<label htmlFor='phylum' className='block text-sm font-medium leading-6 text-dimBlack'>
 								Phylum
 							</label>
-							<div className="mt-1">
 								<input
-									type="text"
-									name="phylum"
-									id="phylum"
-									autoComplete="phylum"
-									className="block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+									type='text'
+									name='phylum'
+									id='phylum'
+									value={phylum}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
 								/>
-							</div>
 						</div>
 
-						<div className="sm:col-span-3">
-							<label htmlFor="class" className="block text-sm font-medium leading-6 text-dimBlack">
+						<div className='sm:col-span-3'>
+							<label htmlFor='class_name' className='block text-sm font-medium leading-6 text-dimBlack'>
 								Class
 							</label>
-							<div className="mt-1">
 								<input
-									type="text"
-									name="class"
-									id="class"
-									autoComplete="class"
-									className="block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+									type='text'
+									name='class_name'
+									id='class_name'
+									value={class_name}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
 								/>
-							</div>
 						</div>
 
-						<div className="sm:col-span-3">
-							<label htmlFor="order" className="block text-sm font-medium leading-6 text-dimBlack">
+						<div className='sm:col-span-3'>
+							<label htmlFor='order' className='block text-sm font-medium leading-6 text-dimBlack'>
 								Order
 							</label>
-							<div className="mt-1">
 								<input
-									type="text"
-									name="order"
-									id="order"
-									autoComplete="order"
-									className="block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+									type='text'
+									name='order'
+									id='order'
+									value={order}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
 								/>
-							</div>
 						</div>
 
-						<div className="sm:col-span-3">
-							<label htmlFor="family" className="block text-sm font-medium leading-6 text-dimBlack">
+						<div className='sm:col-span-3'>
+							<label htmlFor='family' className='block text-sm font-medium leading-6 text-dimBlack'>
 								Family
 							</label>
-							<div className="mt-1">
 								<input
-									type="text"
-									name="family"
-									id="family"
-									autoComplete="family"
-									className="block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+									type='text'
+									name='family'
+									id='family'
+									value={family}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
 								/>
-							</div>
 						</div>
 
-						<div className="sm:col-span-3">
-							<label htmlFor="genus" className="block text-sm font-medium leading-6 text-dimBlack">
+						<div className='sm:col-span-3'>
+							<label htmlFor='genus' className='block text-sm font-medium leading-6 text-dimBlack'>
 								Genus
 							</label>
-							<div className="mt-1">
 								<input
-									type="text"
-									name="genus"
-									id="genus"
-									autoComplete="genus"
-									className="block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+									type='text'
+									name='genus'
+									id='genus'
+									value={genus}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
 								/>
-							</div>
 						</div>
 
-						<div className="sm:col-span-3">
-							<label htmlFor="species" className="block text-sm font-medium leading-6 text-dimBlack">
+						<div className='sm:col-span-3'>
+							<label htmlFor='species' className='block text-sm font-medium leading-6 text-dimBlack'>
 								Species
 							</label>
-							<div className="mt-1">
 								<input
-									type="text"
-									name="species"
-									id="species"
-									autoComplete="species"
-									className="block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+									type='text'
+									name='species'
+									id='species'
+									value={species}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
 								/>
-							</div>
 						</div>
           </div>
         </div>
 
-        <div className="border-b border-gray-900/10 pb-10">
-          <div className="space-y-12 bg-primary justify-center items-center ">
-            <h4 className="mt-10 font-bold  text-dimWhite px-2 py-2">
+        <div className='border-b border-gray-900/10 pb-10'>
+          <div className='space-y-12 bg-dimBlack justify-center items-center '>
+            <h4 className='mt-10 font-bold  text-dimWhite px-2 py-2'>
               Isolation, sampling, and environmental information
             </h4>
           </div>
 
-          <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-6">
+          <div className='mt-4 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-6'>
             
-            <div className="sm:col-span-full">
-							<label htmlFor="isolation_source" className="block text-sm font-medium leading-6 text-dimBlack">
+            <div className='sm:col-span-full'>
+							<label htmlFor='isolation_source' className='block text-sm font-medium leading-6 text-dimBlack'>
 								Sample type/Isolated from
 							</label>
-							<div className="mt-1">
 								<input
-									type="text"
-									name="isolation_source"
-									id="isolation_source"
-									autoComplete="isolation_source"
-									className="block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+									type='text'
+									name='isolation_source'
+									id='isolation_source'
+									value={isolation_source}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
 								/>
-							</div>
 						</div>
 
-            <div className="sm:col-span-3 sm:col-start-1">
-							<label htmlFor="cave_name" className="block text-sm font-medium leading-6 text-dimBlack">
-								Cave name
+            <div className='sm:col-span-3 sm:col-start-1'>
+							<label htmlFor='sampling_site' className='block text-sm font-medium leading-6 text-dimBlack'>
+								Cave/Sampling site
 							</label>
-							<div className="mt-1">
 								<input
-									type="text"
-									name="cave_name"
-									id="cave_name"
-									autoComplete="cave_name"
-									className="block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+									type='text'
+									name='sampling_site'
+									id='sampling_site'
+									value={sampling_site}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
 								/>
-							</div>
 						</div>
 
-            <div className="sm:col-span-3">
-							<label htmlFor="city_province" className="block text-sm font-medium leading-6 text-dimBlack">
-								City/Province
+						<div className='sm:col-span-3'>
+							<label htmlFor='sampling_point' className='block text-sm font-medium leading-6 text-dimBlack'>
+								Sampling point
 							</label>
-							<div className="mt-1">
 								<input
-									type="text"
-									name="city_province"
-									id="city_province"
-									autoComplete="city_province"
-									className="block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+									type='text'
+									name='sampling_point'
+									id='sampling_point'
+									value={sampling_point}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
 								/>
-							</div>
 						</div>
 
-            <div className="sm:col-span-3 sm:col-start-1">
-							<label htmlFor="location_latitude" className="block text-sm font-medium leading-6 text-dimBlack">
+						<div className='sm:col-span-3 sm:col-start-1'>
+							<label htmlFor='sample_type' className='block text-sm font-medium leading-6 text-dimBlack'>
+								Sample type
+							</label>
+								<input
+									type='text'
+									name='sample_type'
+									id='sample_type'
+									value={sample_type}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
+								/>
+						</div>
+
+						<div className='sm:col-span-3'>
+							<label htmlFor='host_species' className='block text-sm font-medium leading-6 text-dimBlack'>
+								Host species
+							</label>
+								<input
+									type='text'
+									name='host_species'
+									id='host_species'
+									value={host_species}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
+								/>
+						</div>
+
+            <div className='sm:col-span-3 sm:col-start-1'>
+							<label htmlFor='city_province' className='block text-sm font-medium leading-6 text-dimBlack'>
+								Town/City/Province
+							</label>
+								<input
+									type='text'
+									name='town_province'
+									id='town_province'
+									value={town_province}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
+								/>
+						</div>
+
+						<div className='sm:col-span-3'>
+							<label htmlFor='location_abbrv' className='block text-sm font-medium leading-6 text-dimBlack'>
+								Location abbreviation
+							</label>
+								<input
+									type='text'
+									name='location_abbrv'
+									id='location_abbrv'
+									value={location_abbrv}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
+								/>
+						</div>
+
+            <div className='sm:col-span-3 sm:col-start-1'>
+							<label htmlFor='location_latitude' className='block text-sm font-medium leading-6 text-dimBlack'>
 								Location latitude
 							</label>
-							<div className="mt-1">
 								<input
-									type="number"
-									name="location_latitude"
-									id="location_latitude"
-									autoComplete="location_latitude"
-									className="block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+									type='number'
+									name='location_latitude'
+									id='location_latitude'
+									value={location_latitude}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
 								/>
-							</div>
 						</div>
 
-            <div className="sm:col-span-3">
-							<label htmlFor="location_longitude" className="block text-sm font-medium leading-6 text-dimBlack">
+            <div className='sm:col-span-3'>
+							<label htmlFor='location_longitude' className='block text-sm font-medium leading-6 text-dimBlack'>
 								Location longitude
 							</label>
-							<div className="mt-1">
 								<input
-									type="number"
-									name="location_longitude"
-									id="location_longitude"
-									autoComplete="location_longitude"
-									className="block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6"
+									type='number'
+									name='location_longitude'
+									id='location_longitude'
+									value={location_longitude}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
 								/>
-							</div>
 						</div>
 
-						<label className="sm:col-span-full text-sm font-medium leading-6 text-dimBlack">
+						<label className='sm:col-span-full text-sm font-medium leading-6 text-dimBlack'>
 							MISO categories
 						</label>
 
-						<div className="sm:col-span-2 sm:col-start-1 mt-1">
+						{/* <div className='sm:col-span-2 sm:col-start-1 mt-1'>
               <select
-                id="miso_cat1"
-                name="miso_cat1"
-                autoComplete="miso_cat1"
-                className="block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary sm:max-w-xs sm:text-sm sm:leading-6"
+                id='miso_cat1'
+                name='miso_cat1'
+                className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary sm:max-w-xs sm:text-sm sm:leading-6'
               >
                 {category_1.map((item) => (
-									<option className={classNames(`${item.color_code} hover:bg-white`)}>
+									<option id={item.name+item.cat1_code} value={item.name} className={classNames(`${item.color_code} hover:bg-white`)}>
 										{item.name}
 									</option>
 								))}
               </select>
             </div>
 
-						<div className="sm:col-span-2 mt-1">
+						<div className='sm:col-span-2 mt-1'>
               <select
-                id="miso_cat2"
-                name="miso_cat2"
-                autoComplete="miso_cat2"
-                className="block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary sm:max-w-xs sm:text-sm sm:leading-6"
+                id='miso_cat2'
+                name='miso_cat2'
+                className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary sm:max-w-xs sm:text-sm sm:leading-6'
               >
 								{category_2.map((item) => (
-									<option >
+									<option id={item.name+item.cat1_code} value={item.name}>
 										{item.name}
 									</option>
 								))}
 							</select>
             </div>
 
-						<div className="sm:col-span-2 mt-1">
+						<div className='sm:col-span-2 mt-1'>
               <select
-                id="miso_cat3"
-                name="miso_cat3"
-                autoComplete="miso_cat3"
-                className="block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary sm:max-w-xs sm:text-sm sm:leading-6"
+                id='miso_cat3'
+                name='miso_cat3'
+                className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary sm:max-w-xs sm:text-sm sm:leading-6'
               >
 								{category_3.map((item) => (
-									<option value={item.name}>
+									<option id={item.name+item.cat1_code} value={item.name}>
 										{item.name}
 									</option>
 								))}
               </select>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
 
-      <div className="mt-6 mb-6 flex items-center justify-end gap-x-6">
-        <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
+      <div className='mt-6 mb-6 flex items-center justify-end gap-x-6'>
+        <button type='button' className='text-sm font-semibold leading-6 text-gray-900'>
           Cancel
         </button>
         <button
-          type="submit"
-          className="rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-dimBlack focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          type='submit'
+          className='rounded-md bg-primary lg:px-6 lg:h-10 sm:h-5 sm:px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-dimBlack focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
         >
           Add Strain
         </button>

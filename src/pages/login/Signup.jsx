@@ -6,8 +6,6 @@ import { toast } from 'react-toastify'
 import Logo from '../../assets/logo.svg'
 import { Spinner } from '../../components/index'
 
-const REGISTER_URL = '/users'
-
 const Signup = () => {
   const [ data, setData ] = useState({
     name: '',
@@ -27,7 +25,7 @@ const Signup = () => {
   const { user, loading, error } = useSelector( (state) => state.auth )
 
 
-  useEffect(() => {
+  useEffect( () => {
     if (error) {
       toast.error(error)
     }

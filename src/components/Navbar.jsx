@@ -3,7 +3,6 @@ import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-// import { useLogoutMutation } from '../features/user/userSlice'
 import { logout } from '../features/auth/authSlice'
 import Logo from '../assets/logo.svg'
 
@@ -29,7 +28,7 @@ export default function Navbar() {
 
   const onLogout = async (e) => {
     e.preventDefault()
-    
+
     try {
       // await logoutCall().unwrap();
       dispatch(logout());
@@ -82,6 +81,14 @@ export default function Navbar() {
                         {item.name}
                       </a>
                     ))}
+                    { user ? (
+                      <Link
+                        to='/strain-collection'
+                        type= 'button'
+                        className='text-dimBlack hover:text-primary rounded-md px-3 py-2 text-md font-semibold'
+                      >Collection</Link>
+                    ) : null
+                    }
                   </div>
                 </div>
               </div>
