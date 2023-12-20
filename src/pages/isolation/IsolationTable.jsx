@@ -2,7 +2,7 @@ import React from 'react'
 
 const IsolationTable = () => {
   return (
-    <div>IsolationTable</div>
+    <div className='flex flex-grow bg-green-500 h-full'>IsolationTable</div>
   )
 }
 
