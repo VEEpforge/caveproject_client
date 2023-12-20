@@ -12,23 +12,29 @@ import {
   TabPanel,
 } from "@material-tailwind/react"
 import styles from '../../style'
+import IsolationTable from './IsolationTable'
+import IsolationMap from './IsolationMap'
 
 const data = [
   {
     label: "Table",
     value: "table",
+    body: <IsolationTable />
   },
   {
     label: "Map",
     value: "map",
+    body: <IsolationMap />
   },
   {
     label: "Krona",
     value: "krona",
+    body: <IsolationTable />
   },
   {
     label: "Download",
     value: "download",
+    body: <IsolationTable />
   },
 ]
 
@@ -65,13 +71,13 @@ const IsolationSource = () => {
           <div className='max-w-full bg-gray-200 ring-2 ring-inset ring-primary border-1 px-2 py-2 mt-2 mx-4'>
             <Button onClick={toggleOpen} >Open Collapse</Button>
           </div>
-          <div>
+          <div className='mx-4'>
             <Tabs value={activeTab}>
               <TabsHeader
                 className="rounded-none border-b border-blue-gray-50 bg-transparent p-0 mt-4"
                 indicatorProps={{
                   className:
-                    "bg-transparent border-b-2 border-gray-900 shadow-none rounded-none",
+                    "bg-transparent border-b-2 border-primary shadow-none rounded-none",
                 }}
               >
                 {data.map(({ label, value }) => (
@@ -79,18 +85,19 @@ const IsolationSource = () => {
                     key={value}
                     value={value}
                     onClick={() => setActiveTab(value)}
-                    className={activeTab === value ? "text-gray-900 font-semibold" : "font-normal"}
+                    className={activeTab === value ? "text-primary font-semibold" : "font-normal"}
                   >
                     {label}
                   </Tab>
                 ))}
               </TabsHeader>
               <TabsBody>
-                {/* {data.map(({ value, desc }) => (
+                {data.map(({ value, body }) => (
                   <TabPanel key={value} value={value}>
-                    {desc}
+                    {body}
                   </TabPanel>
-                ))} */}
+                ))}
+                {/* <IsolationMap /> */}
               </TabsBody>
             </Tabs>
           </div>
@@ -98,10 +105,6 @@ const IsolationSource = () => {
         </section>
       </div>
       
-			<div className='w-full h-screen bg-slate-50 opacity-20'>
-
-    </div>
-		<div className='w-screen h-screen bg-slate-100'></div>
 		</>
   )
 }

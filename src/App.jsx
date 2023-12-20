@@ -7,6 +7,7 @@ import Signup from './pages/login/Signup';
 import AddStrain from './pages/strain/AddStrain';
 import IsolationSource from './pages/isolation/IsolationSource';
 import StrainCollection from './pages/strain/StrainCollection';
+import SelectMISO from './components/SelectMISO';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
             <Route path='/login' element={<Login />} />
             <Route path='/signup' element={<Signup />} />
             <Route path='/isolation-source' element={<IsolationSource />} />
+            <Route path='/dropdown' element={<SelectMISO />} />
 
             {/* Admin/Collection/Profile */}
             <Route path='/add-strain' element={<AddStrain />} />

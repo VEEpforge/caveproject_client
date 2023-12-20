@@ -12,7 +12,7 @@ const AddStrain = () => {
         </div>
       </div>
 
-      <div className={`bg-transparent ${styles.flexStart}`}>
+      <div className={`bg-transparent ${styles.flexStart} w-full `}>
         <div>
           <StrainForm />
         </div>

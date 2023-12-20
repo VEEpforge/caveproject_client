@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+// import { miso_category_1 } from '../constants/miso_categories'
 import { category_1, category_2, category_3 } from '../constants/miso'
 import { addStrain,reset } from '../features/strain/strainSlice'
-import { Spinner } from '../components/index'
+import { Spinner, SelectMISO } from '../components/index'
 import { toast } from 'react-toastify'
 
 function classNames(...classes) {
@@ -32,7 +33,7 @@ const StrainForm = () => {
 		location_abbrv: '',
 		location_latitude: 0,
 		location_longitude: 0,
-		miso_categories: [],
+		// miso_categories: [],
 	})
 
 	const {
@@ -54,8 +55,15 @@ const StrainForm = () => {
 		location_abbrv,
 		location_latitude,
 		location_longitude,
-		miso_categories,
+		// miso_categories,
 	} = data
+
+	const [miso_categories, setMISOCategories] = useState([])
+
+	const handleCallback = (childData) => {
+		setMISOCategories(childData)
+	}
+	console.log(miso_categories)
 
 	const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -75,7 +83,7 @@ const StrainForm = () => {
     }
 		
 		dispatch(reset())
-  }, [ strains, loading, error, navigate, dispatch ])
+  }, [ loading, error, strains, navigate, dispatch ])
 
 	const onChange = (e) => {
     setData((prevState) => ({
@@ -370,7 +378,7 @@ const StrainForm = () => {
 								Location latitude
 							</label>
 								<input
-									type='number'
+									type='text'
 									name='location_latitude'
 									id='location_latitude'
 									value={location_latitude}
@@ -384,7 +392,7 @@ const StrainForm = () => {
 								Location longitude
 							</label>
 								<input
-									type='number'
+									type='text'
 									name='location_longitude'
 									id='location_longitude'
 									value={location_longitude}
@@ -397,6 +405,8 @@ const StrainForm = () => {
 							MISO categories
 						</label>
 
+						<SelectMISO childToParent={handleCallback} />
+
 						{/* <div className='sm:col-span-2 sm:col-start-1 mt-1'>
               <select
                 id='miso_cat1'
@@ -404,7 +414,7 @@ const StrainForm = () => {
                 className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary sm:max-w-xs sm:text-sm sm:leading-6'
               >
                 {category_1.map((item) => (
-									<option id={item.name+item.cat1_code} value={item.name} className={classNames(`${item.color_code} hover:bg-white`)}>
+									<option id={item.name} key={item.cat1_code} value={item.name}>
 										{item.name}
 									</option>
 								))}
