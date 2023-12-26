@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-// import { miso_category_1 } from '../constants/miso_categories'
-import { category_1, category_2, category_3 } from '../constants/miso'
 import { addStrain,reset } from '../features/strain/strainSlice'
 import { Spinner, SelectMISO } from '../components/index'
 import { toast } from 'react-toastify'
@@ -24,16 +22,18 @@ const StrainForm = () => {
 		family: '',
 		genus: '',
 		species: '',
-		isolation_source: '',
 		sampling_site: '',
 		sampling_point: '',
-		sample_type: '',
+		host_type: '',
 		host_species: '',
-		town_province: '',
+		sample_type: '',
+		isolate_id: '',
+		city_province: '',
 		location_abbrv: '',
 		location_latitude: 0,
 		location_longitude: 0,
 		// miso_categories: [],
+		location_information: '',
 	})
 
 	const {
@@ -46,16 +46,18 @@ const StrainForm = () => {
 		family,
 		genus,
 		species,
-		isolation_source,
 		sampling_site,
 		sampling_point,
-		sample_type,
+		host_type,
 		host_species,
-		town_province,
+		sample_type,
+		isolate_id,
+		city_province,
 		location_abbrv,
 		location_latitude,
 		location_longitude,
 		// miso_categories,
+		location_information,
 	} = data
 
 	const [miso_categories, setMISOCategories] = useState([])
@@ -75,7 +77,7 @@ const StrainForm = () => {
     if (error) {
       toast.error(error)
     }
-    if (strains != []) {
+    if (strains != [] & strains.length > 0) {
       setData({})
 			document.getElementById('strainForm').reset()
       toast.success('Successfully added strain!')
@@ -105,12 +107,13 @@ const StrainForm = () => {
 			family,
 			genus,
 			species,
-			isolation_source,
 			sampling_site,
 			sampling_point,
-			sample_type,
+			host_type,
 			host_species,
-			town_province,
+			sample_type,
+			isolate_id,
+			city_province,
 			location_abbrv,
 			location_latitude,
 			location_longitude,
@@ -129,7 +132,7 @@ const StrainForm = () => {
       <div className='space-y-12'>
         <div className='border-b border-gray-900/10 pb-10'>
 
-          <div className='space-y-12 bg-primary justify-center items-center '>
+          <div className='space-y-12 bg-dimBlack justify-center items-center '>
             <h4 className='mt-10 font-bold  text-dimWhite px-2 py-2'>
               Name and Taxonomic Classification
             </h4>
@@ -275,20 +278,6 @@ const StrainForm = () => {
 
           <div className='mt-4 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-6'>
             
-            <div className='sm:col-span-full'>
-							<label htmlFor='isolation_source' className='block text-sm font-medium leading-6 text-dimBlack'>
-								Sample type/Isolated from
-							</label>
-								<input
-									type='text'
-									name='isolation_source'
-									id='isolation_source'
-									value={isolation_source}
-									onChange={onChange}
-									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
-								/>
-						</div>
-
             <div className='sm:col-span-3 sm:col-start-1'>
 							<label htmlFor='sampling_site' className='block text-sm font-medium leading-6 text-dimBlack'>
 								Cave/Sampling site
@@ -318,14 +307,14 @@ const StrainForm = () => {
 						</div>
 
 						<div className='sm:col-span-3 sm:col-start-1'>
-							<label htmlFor='sample_type' className='block text-sm font-medium leading-6 text-dimBlack'>
-								Sample type
+							<label htmlFor='host_type' className='block text-sm font-medium leading-6 text-dimBlack'>
+								Host type
 							</label>
 								<input
 									type='text'
-									name='sample_type'
-									id='sample_type'
-									value={sample_type}
+									name='host_type'
+									id='host_type'
+									value={host_type}
 									onChange={onChange}
 									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
 								/>
@@ -345,15 +334,43 @@ const StrainForm = () => {
 								/>
 						</div>
 
-            <div className='sm:col-span-3 sm:col-start-1'>
-							<label htmlFor='city_province' className='block text-sm font-medium leading-6 text-dimBlack'>
-								Town/City/Province
+						<div className='sm:col-span-3 sm:col-start-1'>
+							<label htmlFor='sample_type' className='block text-sm font-medium leading-6 text-dimBlack'>
+								Sample type
 							</label>
 								<input
 									type='text'
-									name='town_province'
-									id='town_province'
-									value={town_province}
+									name='sample_type'
+									id='sample_type'
+									value={sample_type}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
+								/>
+						</div>
+
+						<div className='sm:col-span-3 sm:col-start'>
+							<label htmlFor='isolate_id' className='block text-sm font-medium leading-6 text-dimBlack'>
+								Isolate id
+							</label>
+								<input
+									type='text'
+									name='isolate_id'
+									id='isolate_id'
+									value={isolate_id}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
+								/>
+						</div>
+
+            <div className='sm:col-span-3 sm:col-start-1'>
+							<label htmlFor='city_province' className='block text-sm font-medium leading-6 text-dimBlack'>
+								City/Province
+							</label>
+								<input
+									type='text'
+									name='city_province'
+									id='city_province'
+									value={city_province}
 									onChange={onChange}
 									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
 								/>
@@ -378,7 +395,7 @@ const StrainForm = () => {
 								Location latitude
 							</label>
 								<input
-									type='text'
+									type='number'
 									name='location_latitude'
 									id='location_latitude'
 									value={location_latitude}
@@ -392,7 +409,7 @@ const StrainForm = () => {
 								Location longitude
 							</label>
 								<input
-									type='text'
+									type='number'
 									name='location_longitude'
 									id='location_longitude'
 									value={location_longitude}
@@ -407,47 +424,20 @@ const StrainForm = () => {
 
 						<SelectMISO childToParent={handleCallback} />
 
-						{/* <div className='sm:col-span-2 sm:col-start-1 mt-1'>
-              <select
-                id='miso_cat1'
-                name='miso_cat1'
-                className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary sm:max-w-xs sm:text-sm sm:leading-6'
-              >
-                {category_1.map((item) => (
-									<option id={item.name} key={item.cat1_code} value={item.name}>
-										{item.name}
-									</option>
-								))}
-              </select>
-            </div>
-
-						<div className='sm:col-span-2 mt-1'>
-              <select
-                id='miso_cat2'
-                name='miso_cat2'
-                className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary sm:max-w-xs sm:text-sm sm:leading-6'
-              >
-								{category_2.map((item) => (
-									<option id={item.name+item.cat1_code} value={item.name}>
-										{item.name}
-									</option>
-								))}
-							</select>
-            </div>
-
-						<div className='sm:col-span-2 mt-1'>
-              <select
-                id='miso_cat3'
-                name='miso_cat3'
-                className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-primary sm:max-w-xs sm:text-sm sm:leading-6'
-              >
-								{category_3.map((item) => (
-									<option id={item.name+item.cat1_code} value={item.name}>
-										{item.name}
-									</option>
-								))}
-              </select>
-            </div> */}
+						<div className='col-span-full'>
+							<label htmlFor='location_information' className='block text-sm font-medium leading-6 text-dimBlack'>
+								Location information
+							</label>
+								<input
+									type='text'
+									name='location_information'
+									id='location_information'
+									value={location_information}
+									onChange={onChange}
+									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
+								/>
+						</div>
+						
           </div>
         </div>
       </div>

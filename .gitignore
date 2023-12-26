@@ -13,6 +13,7 @@ dist
 dist-ssr
 *.local
 .env
+src/pages/isolation/sample.jsx
 
 # Editor directories and files
 .vscode/*

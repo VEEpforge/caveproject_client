@@ -81,13 +81,13 @@ export default function Navbar() {
                         {item.name}
                       </a>
                     ))}
-                    { user ? (
+                    { user?.user_level === 'ADMIN' ?  (
                       <Link
                         to='/strain-collection'
                         type= 'button'
                         className='text-dimBlack hover:text-primary rounded-md px-3 py-2 text-md font-semibold'
                       >Collection</Link>
-                    ) : null
+                     ) : null
                     }
                   </div>
                 </div>

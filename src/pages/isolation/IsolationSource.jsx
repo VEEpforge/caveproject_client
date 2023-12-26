@@ -11,9 +11,8 @@ import {
   Tab,
   TabPanel,
 } from "@material-tailwind/react"
-import styles from '../../style'
-import IsolationTable from './IsolationTable'
-import IsolationMap from './IsolationMap'
+import { IsolationTable, IsolationMap, Krona } from './index'
+
 
 const data = [
   {
@@ -29,7 +28,7 @@ const data = [
   {
     label: "Krona",
     value: "krona",
-    body: <IsolationTable />
+    body: <Krona />
   },
   {
     label: "Download",
