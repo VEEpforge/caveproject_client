@@ -1,17 +1,17 @@
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { Dialog } from '@headlessui/react'
+import { Bars3Icon, XMarkIcon, UserIcon } from '@heroicons/react/24/outline'
 import { logout } from '../features/auth/authSlice'
 import Logo from '../assets/logo.svg'
-
+import { Button } from '@material-tailwind/react'
 
 const navigation = [
-  { name: 'Home', href: '/', current: false },
-  { name: 'Taxonomy', href: '#', current: false },
-  { name: 'Isolation source', href: '/isolation-source', current: false },
-  { name: 'About', href: '#', current: false },
+  { name: 'Home', href: '/', value: 'home' },
+  { name: 'Taxonomy', href: '#', value: 'taxonomy' },
+  { name: 'Isolation source', href: '/isolation-source', value: 'isolation' },
+  { name: 'About', href: '#', value: 'about' },
 ]
 
 function classNames(...classes) {
@@ -19,18 +19,15 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
-  const { user } = useSelector((state) => state.auth)
+	const { user } = useSelector((state) => state.auth)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
-  // const [ logoutCall ] = useLogoutMutation()
 
   const onLogout = async (e) => {
     e.preventDefault()
 
     try {
-      // await logoutCall().unwrap();
       dispatch(logout());
       navigate('/');
     } catch (err) {
@@ -38,182 +35,191 @@ export default function Navbar() {
     }
   }
 
+	// Mobile
+  const [ mobileMenuOpen, setMobileMenuOpen ] = useState(false)
+
+	// Page/Tab
+	const [activeTab, setActiveTab] = useState('home');
+
   return (
-    <Disclosure as="nav" className="bg-transparent">
-      {({ open }) => (
-        <>
-          <div className="mx-auto max-w-7xl px-4 py-2 sm:px-6 lg:px-8">
-            <div className="relative flex h-16 items-center justify-between">
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                {/* Mobile menu button*/}
-                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-900 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                  <span className="sr-only">Open main menu</span>
-                  {open ? (
-                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
-                  ) : (
-                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
-                  )}
-                </Disclosure.Button>
-              </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
-                  <Link to='/'>
-                    <img
-                      className="h-8 w-auto"
-                      src={Logo}
-                      alt="Logo"
-                    />
-                  </Link>
-                </div>
-                <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-dimBlack hover:text-primary',
-                          'rounded-md px-3 py-2 text-md font-semibold'
-                        )}
-                        // aria-current={item.current ? 'page' : true}
-                        aria-current = 'page'
-                      >
-                        {item.name}
-                      </a>
-                    ))}
-                    { user?.user_level === 'ADMIN' ?  (
-                      <Link
-                        to='/strain-collection'
-                        type= 'button'
-                        className='text-dimBlack hover:text-primary rounded-md px-3 py-2 text-md font-semibold'
-                      >Collection</Link>
-                     ) : null
-                    }
-                  </div>
-                </div>
-              </div>
-              {/*
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
-                  type="button"
-                  className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
-                
-                {/* Profile dropdown
-                <Menu as="div" className="relative ml-3">
-                  <div>
-                    <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                      <span className="sr-only">Open user menu</span>
-                      <img
-                        className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                      />
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                          >
-                            Your Profile
-                          </a>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                          >
-                            Settings
-                          </a>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                          >
-                            Sign out
-                          </a>
-                        )}
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-              </div>
-              */}
-              { user ? (
-                <>
-                <h3>{user.name}</h3>
+    <div className=''>
+      <header className='absolute inset-x-0 top-0 z-50 border-b border-gray-900/10 border-4'>
+        <nav className='flex items-center justify-between p-6 lg:px-10' aria-label='Navbar'>
+          <div className='flex lg:flex-1'>
+						<Link to='/'>
+              <img
+                className='h-8 w-auto'
+                src={Logo}
+                alt='Logo'
+              />
+            </Link>
+          </div>
+          <div className='flex lg:hidden'>
+            <button
+              type='button'
+              className='-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700'
+              onClick={() => setMobileMenuOpen(true)}
+            >
+              <span className='sr-only'>Open main menu</span>
+              <Bars3Icon className='h-6 w-6' aria-hidden='true' />
+            </button>
+          </div>
+          <div className='hidden lg:flex lg:gap-x-12'>
+            { navigation.map( (item) => (
+              // <a key={item.name} href={item.href} className='text-sm font-semibold leading-6 text-gray-900'>
+              //   {item.name}
+              // </a>
+							<Link
+								key={item.name}
+								type='button'
+								to={item.href}
+								onClick={() => setActiveTab(item.value)}
+								className={classNames(
+									activeTab === item.value ? 'text-primary font-bold' : 'text-dimBlack hover:text-primary font-semibold',
+									'px-3 py-2 '
+								)}
+							>
+								{item.name}
+							</Link>
+            ))}
+						{ user?.user_level === 'ADMIN' ?  (
+              <Link
+                to='/strain-collection'
+                type= 'button'
+								onClick={() => setActiveTab('collection')}
+                className={classNames(
+									activeTab === 'collection' ? 'text-primary font-bold' : 'text-dimBlack hover:text-primary font-semibold',
+									'px-3 py-2 '
+								)}
+              >
+								Collection
+							</Link>
+              ) : null
+            }
+          </div>
+					{ user ?
+						(
+							<div className='hidden lg:flex lg:flex-1 lg:justify-end'>
+								<UserIcon className='inline-flex mr-1 mt-2 h-5 w-5 text-gray-500 items-center' aria-hidden='true' />
+                <h3 className='inline-flex text-gray-500 items-center'>{user.name}</h3>
                 <Link
                   to='/'
-                  type="button"
+                  type='button'
                   onClick={onLogout}
-                  className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-dimBlack focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  className='inline-flex ml-2 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-dimBlack'
                 >
-                  Log out  <span aria-hidden="true"> &rarr;</span>
+                  Log out  <span aria-hidden='true'> &rarr;</span>
                 </Link>
-                </>
-              ) : (
-                <>
-                  <div className='hidden sm:ml-6 sm:block'>
-                    <Link
-                      to='/signup'
-                      type="button"
-                      className="inline-flex items-center rounded-md bg-transparent mr-2 px-3 py-2 text-sm font-semibold text-dimBlack shadow-sm hover:bg-dimBlack hover:text-dimWhite focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                      Sign up
-                    </Link>
-                  </div>
-                  <Link
-                    to='/login'
-                    type="button"
-                    className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-dimBlack focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    Log in  <span aria-hidden="true"> &rarr;</span>
-                  </Link>
-                </>
-              )}
-            </div>
-          </div>
+              </div>
+						) : (	
+							<div className='hidden lg:flex lg:flex-1 lg:justify-end'>
+								<Link
+									to='/signup'
+									type='button'
+									className='inline-flex rounded-lg px-3 py-2 font-semibold text-dimBlack hover:bg-dimBlack hover:text-dimWhite'
+								>
+									Sign up
+								</Link>
+								<Link
+									type='button'
+									to='/login'
+									className='inline-flex ml-2 bg-primary rounded-lg px-3 py-2 font-semibold text-dimWhite hover:bg-dimBlack '
+								>
+									Log in <span aria-hidden='true'>&rarr;</span>
+								</Link>
+							</div>
+						)
+					}
+        </nav>
 
-          <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2">
-              {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-dimBlack hover:bg-gray-700 hover:text-white',
-                    'block rounded-md px-3 py-2 text-base font-medium'
-                  )}
-                  aria-current={item.current ? 'page' : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
-              ))}
+				{/* Mobile View */}
+        <Dialog as='div' className='lg:hidden' open={mobileMenuOpen} onClose={setMobileMenuOpen}>
+          <div className='fixed inset-0 z-50' />
+          <Dialog.Panel className='fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-dimWhite px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10'>
+            <div className='flex items-center justify-between'>
+							<Link to='/'>
+								<img
+									className='h-8 w-auto'
+									src={Logo}
+									alt='Logo'
+								/>
+							</Link>
+              <button
+                type='button'
+                className='-m-2.5 rounded-md p-2.5 text-gray-700'
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <span className='sr-only'>Close menu</span>
+                <XMarkIcon className='h-6 w-6' aria-hidden='true' />
+              </button>
             </div>
-          </Disclosure.Panel>
-        </>
-      )}
-    </Disclosure>
+
+            {/* User name */}
+            { user ?
+              (
+                <div className='mt-6 flex'>
+                  <UserIcon className='inline-flex mr-2 mt-0.5 h-5 w-5 text-gray-500 items-center' aria-hidden='true' />
+                  <h3 className='inline-flex text-gray-500 items-center'>{user.name}</h3>
+                </div>
+              ) : null
+            }
+
+            <div className='mt-6 flow-root'>
+              <div className='-my-6 divide-y divide-gray-500/10'>
+                <div className='space-y-2 py-6'>
+                  {navigation.map((item) => (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className='-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-dimBlack hover:bg-gray-50'
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+									{ user?.user_level === 'ADMIN' ?  (
+										<Link
+											to='/strain-collection'
+											type= 'button'
+											className='-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-dimBlack hover:bg-gray-50'
+										>
+											Collection
+										</Link>
+										) : null
+									}
+                </div>
+								{ user ?
+									(
+										<Link
+												type='button'
+												to='/'
+												onClick={onLogout}
+												className='w-full rounded-lg bg-primary px-3 py-2.5 text-base font-semibold leading-7 text-dimWhite hover:bg-dimBlack justify-between items-center'
+											>
+												Log out
+										</Link>
+									) : (
+										<div className='flex items-center gap-x-1 py-4'>
+											<Link
+												type='button'
+												to='/login'
+												className='w-full rounded-lg bg-primary px-3 py-2.5 text-base font-semibold leading-7 text-dimWhite hover:bg-dimBlack justify-between items-center'
+											>
+												Log in
+											</Link>
+											<Link
+												to='/signup'
+												className='w-full rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50'
+											>
+												Sign up
+											</Link>
+										</div>
+									)
+								}
+              </div>
+            </div>
+          </Dialog.Panel>
+        </Dialog>
+      </header>
+    </div>
   )
 }
