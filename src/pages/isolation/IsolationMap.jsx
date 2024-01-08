@@ -1,17 +1,20 @@
 import { MapContainer, TileLayer, Polygon, Marker, Popup, Tooltip } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import { provinces } from './4AProvinces'
-import { caves } from './caves'
+import { provinces } from '../../constants/4AProvincesGeoJSON'
+import { caves } from '../../constants/caves'
 
 const IsolationMap = () => {
   return (
     <>
-			<MapContainer center={[14.1651, 121.2402]} zoom={10}>
+			<MapContainer center={[14.1651, 121.2402]} zoom={15} zoomControl>
 				<TileLayer
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 					url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 				/>
-				
+				{/* <TileLayer
+					url='http://{s}.google.com/vt?lyrs=s&x={x}&y={y}&z={z}'
+					subdomains={['mt0','mt1','mt2','mt3']}
+				/> */}
 				{
 					provinces.features.map((province) => {
 						var coordinates;
@@ -61,14 +64,26 @@ const IsolationMap = () => {
 					})
 				}
 
+				<Marker position={[14.1651, 121.2402]}>
+					<Popup>
+						Center
+					</Popup>
+				</Marker>
+
+				{/* <Marker position={[14.2631119, 121.5787233]}>
+					<Popup>
+						Cavinti Cave
+					</Popup>
+				</Marker> */}
+
 				{
-					// caves.map( (item) => {
-					// 	<Marker position={item.coordinates} >
-					// 		<Popup>
-					// 			{item.name}
-					// 		</Popup>
-					// 	</Marker>
-					// })
+					caves.map( (cave) => (
+						<Marker position={cave.coordinates}>
+							<Popup>
+								{cave.name}
+							</Popup>
+						</Marker>
+					))
 				}
 
 			</MapContainer>

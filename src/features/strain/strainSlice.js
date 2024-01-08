@@ -69,6 +69,18 @@ const strainSlice = createSlice({
 				state.loading = false
 				state.error = action.payload
 			})
+			.addCase(getAllStrains.pending, (state) => {
+				state.loading = true
+			})
+			.addCase(getAllStrains.fulfilled, (state, action) => {
+				state.strains.push(action.payload)
+				state.loading = false
+				state.error = null
+			})
+			.addCase(getAllStrains.rejected, (state, action) => {
+				state.loading = false
+				state.error = action.payload
+			})
 			.addCase(getStrainByUser.pending, (state) => {
 				state.loading = true
 			})

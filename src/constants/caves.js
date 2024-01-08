@@ -17,7 +17,7 @@ export const caves = [
 	{
 		'name': 'Calinawan Cave',
 		'province': 'Laguna',
-		'coordinates': [14.557720155389793, 121.31446922676803]
+		'coordinates': [14.5426419, 121.3175824]
 	},
 	{
 		'name': 'Tagong Bato Small Cave',
@@ -32,7 +32,7 @@ export const caves = [
 	{
 		'name': 'Kinabuhayan Cave',
 		'province': 'Quezon',
-		'coordinates': [14.091333255172561, 121.43388201173782]
+		'coordinates': [14.0413604, 121.4477816]
 	},
 	{
 		'name': 'Malaog Cave',
@@ -47,7 +47,7 @@ export const caves = [
 	{
 		'name': 'Sibatiya Cave',
 		'province': 'Quezon',
-		'coordinates': [13.9660941020914, 121.79093768331013]
+		'coordinates': [13.9264670, 121.7782500]
 	},
 	{
 		'name': 'Malusak Cave',
@@ -87,6 +87,6 @@ export const caves = [
 	{
 		'name': 'Pamitinan Cave',
 		'province': 'Rizal',
-		'coordinates': [14.72984094499473, 121.18901211895428]
+		'coordinates': [14.7301212, 121.1892248]
 	},
 ]

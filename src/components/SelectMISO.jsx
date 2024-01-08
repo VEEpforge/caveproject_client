@@ -27,7 +27,8 @@ const SelectMISO = ({childToParent}) => {
 		setC3('')
 		{childToParent([c1,e,c3])}
 
-		const c2_code = category_2.find((item) => {return item.name === e }).cat2_code
+		const c1_code = category_1.find((item) => {return item.name === c1 }).cat1_code
+		const c2_code = category_2.find((item) => {return item.name === e && item.cat1_code === c1_code }).cat2_code
 		setC3List(category_3.filter((item) => {return item.cat2_code === c2_code }))
 	}
 	const handleCat3Change = async (e) => {
