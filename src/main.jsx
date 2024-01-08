@@ -6,7 +6,7 @@ import './index.css'
 import { store } from './app/store.js'
 import { disableReactDevTools } from '@fvilers/disable-react-devtools';
 
-if (process.env.NODE_ENV === 'production') disableReactDevTools()
+if (process.env.NODE_ENV === 'development') disableReactDevTools()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
