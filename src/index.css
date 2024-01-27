@@ -5,5 +5,19 @@
 @tailwind utilities;
 
 .leaflet-container {
-    height: 80vh;
+  height: 80vh;
+}
+
+.cluster-icon {
+	background-color: #fff176;
+  height: 2em;
+  width: 2em;
+  color: #0D0C22;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  font-weight: 700;
+  box-shadow: 0 0 0px 5px #fff;
 }

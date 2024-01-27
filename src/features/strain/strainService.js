@@ -1,6 +1,6 @@
 import axios from "../../api/axios"
 
-const STRAIN_URL = '/strains'
+const STRAIN_URL = '/strains/'
 
 const addStrain = async (strainData, token) => {
 	const authHeader = {
@@ -37,7 +37,38 @@ const getStrainByUser = async (token) => {
 	}
 	const response = await axios.get(STRAIN_URL + '/collection', headerAuth)
 
-	console.log(response.data)
+	if(response.data && (response.data.error == null) ) {
+		localStorage.setItem( 'strain', JSON.stringify(response.data) )
+		return response.data
+	} else {
+		throw new Error(response.data.error)
+	}
+}
+
+const updateStrain = async (strainData, id, token) => {
+	const headerAuth = {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	}
+	const response = await axios.put(STRAIN_URL + id, strainData, headerAuth)
+	console.log('Response: ' + response)
+
+	if(response.data && (response.data.error == null) ) {
+		localStorage.setItem( 'strain', JSON.stringify(response.data) )
+		return response.data
+	} else {
+		throw new Error(response.data.error)
+	}
+}
+
+const deleteStrain = async (id, token) => {
+	const headerAuth = {
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	}
+	const response = await axios.delete(STRAIN_URL + id, headerAuth)
 
 	if(response.data && (response.data.error == null) ) {
 		localStorage.setItem( 'strain', JSON.stringify(response.data) )
@@ -51,6 +82,8 @@ const strainService = {
 	addStrain,
 	getAllStrains,
 	getStrainByUser,
+	updateStrain,
+	deleteStrain
 }
 
 export default strainService

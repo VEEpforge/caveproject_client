@@ -1,23 +1,13 @@
 export const caves = [
   {
-		'name': 'Cavinti Underground River and Cave Complex',
+		'name': 'Cavinti Underground River and Caves Complex',
 		'province': 'Laguna',
-		'coordinates': [14.306271243126654, 121.70326780910446]
+		'coordinates': [14.2631119, 121.5787233]
 	},
 	{
 		'name': 'Cabag Cave',
-		'province': 'Laguna',
+		'province': 'Cavite',
 		'coordinates': [14.239726233256526, 120.95207761298605]
-	},
-	{
-		'name': 'Sangab Cave',
-		'province': 'Laguna',
-		'coordinates': [14.657387688633309, 121.33163536482438]
-	},
-	{
-		'name': 'Calinawan Cave',
-		'province': 'Laguna',
-		'coordinates': [14.5426419, 121.3175824]
 	},
 	{
 		'name': 'Tagong Bato Small Cave',

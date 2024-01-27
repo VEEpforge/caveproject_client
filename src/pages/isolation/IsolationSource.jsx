@@ -1,18 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
 import { Navbar, SidebarFilter, Spinner } from '../../components'
-import {
-  Button,
-  Collapse,
-  Tabs,
-  TabsHeader,
-  TabsBody,
-  Tab,
-  TabPanel,
-} from '@material-tailwind/react'
-import { IsolationTable, IsolationMap, Krona } from './index'
+import { Button, Collapse, Tabs, TabsHeader, TabsBody, Tab, TabPanel} from '@material-tailwind/react'
+import { IsolationTable, IsolationMap, Krona, Metrics } from './index'
 import { getAllStrains, reset } from '../../features/strain/strainSlice'
 import { toast } from 'react-toastify'
 
@@ -21,7 +11,6 @@ function classNames(...classes) {
 }
 
 const IsolationSource = () => {
-  
   // SideBarFilter
   const [ open, setOpen ] = useState(true);
   const toggleOpen = () => setOpen((cur) => !cur);
@@ -30,14 +19,17 @@ const IsolationSource = () => {
   const [activeTab, setActiveTab] = useState('table');
 
   // Strains
-  const [ data, setData ] = useState(null)
+  // const [ data, setData ] = useState([])
   const { strains, loading, error } = useSelector( (state) => state.strain )
   const dispatch = useDispatch()
 
-  
+  //Filters
+  const [ filteredData, setFilteredData ] = useState([])
+  const handleFilterData = (data) => {
+		setFilteredData(data)
+	}
 
   useEffect(() => {
-    
     if (error) {
       toast.error(error)
     }
@@ -49,12 +41,9 @@ const IsolationSource = () => {
     }
   },[ error, dispatch ])
 
-
-  console.log('Data: ' + data)
   if (loading) {
     return <Spinner />
   }
-
 
   const tabs = [
     {
@@ -65,12 +54,12 @@ const IsolationSource = () => {
     {
       label: 'Map',
       value: 'map',
-      body: <IsolationMap />
+      body: <IsolationMap strains={strains} />
     },
     {
-      label: 'Krona',
-      value: 'krona',
-      body: <Krona />
+      label: 'Metrics',
+      value: 'metrics',
+      body: <Metrics strains={strains} />
     },
     {
       label: 'Download',
@@ -79,26 +68,30 @@ const IsolationSource = () => {
     },
   ]
 
+  // console.log(data)
+
   return (
     <div>
-      <header className='top-0'>
+      {/* <header className='top-0'> */}
         <Navbar />
-      </header>
-      <div className='flex pt-20'>
+      {/* </header> */}
+      <div className='flex mt-20'>
         <section className={classNames(
           !open ? 'hidden' : 'flex-wrap h-full', 'pt-5'
         )}>
           <Collapse open={open}>
-            <SidebarFilter/>
+            {/* Not working */}
+            {/* <SidebarFilter strains={strains} handleFilterData={handleFilterData} /> */}
           </Collapse>
         </section>
         <section className='flex-grow pt-5'>
-          <div className='max-w-full bg-gray-200 ring-2 ring-inset ring-primary border-1 px-2 py-2 mt-2 mx-4'>
+          {/* Not working */}
+          {/* <div className='max-w-full bg-gray-200 ring-2 ring-inset ring-primary border-1 px-2 py-2 mt-2 mx-4'>
             <Button onClick={toggleOpen} >{!open? 'Open' : 'Close'}</Button>
-            {/* <Collapse open={open}>
+            <Collapse open={open}>
               <SidebarFilter/>
-            </Collapse> */}
-          </div>
+            </Collapse>
+          </div> */}
           <div className='mx-4'>
             <Tabs value={activeTab}>
               <TabsHeader
@@ -120,8 +113,8 @@ const IsolationSource = () => {
                 ))}
               </TabsHeader>
               <TabsBody>
-                {tabs.map(({ value, body }) => (
-                  <TabPanel key={value} value={value}>
+                {tabs.map(({ value, body, index }) => (
+                  <TabPanel key={value+index} value={value}>
                     {body}
                   </TabPanel>
                 ))}

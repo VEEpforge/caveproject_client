@@ -29,7 +29,7 @@ const StrainForm = () => {
 		sample_type: '',
 		isolate_id: '',
 		city_province: '',
-		location_abbrv: '',
+		location_abbr: '',
 		location_latitude: 0,
 		location_longitude: 0,
 		// miso_categories: [],
@@ -53,7 +53,7 @@ const StrainForm = () => {
 		sample_type,
 		isolate_id,
 		city_province,
-		location_abbrv,
+		location_abbr,
 		location_latitude,
 		location_longitude,
 		// miso_categories,
@@ -72,30 +72,30 @@ const StrainForm = () => {
 
 	useEffect(() => {
 		if (loading) {
-      <Spinner />
-    }
-    if (error) {
-      toast.error(error)
-    }
-    if (strains != [] & strains.length > 0) {
-      setData({})
+	  <Spinner />
+	}
+	if (error) {
+	  toast.error(error)
+	}
+	if (strains != [] & strains.length > 0) {
+	  setData({})
 			document.getElementById('strainForm').reset()
-      toast.success('Successfully added strain!')
+	  toast.success('Successfully added strain!')
 			navigate('/add-strain')
-    }
+	}
 		
 		dispatch(reset())
   }, [ loading, error, strains, navigate, dispatch ])
 
 	const onChange = (e) => {
-    setData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }))
+	setData((prevState) => ({
+	  ...prevState,
+	  [e.target.name]: e.target.value,
+	}))
   }
 
 	const onSubmit = async (e) => {
-    e.preventDefault()
+	e.preventDefault()
 
 		const strainData = {
 			strain_name,
@@ -114,7 +114,7 @@ const StrainForm = () => {
 			sample_type,
 			isolate_id,
 			city_province,
-			location_abbrv,
+			location_abbr,
 			location_latitude,
 			location_longitude,
 			miso_categories,
@@ -124,19 +124,19 @@ const StrainForm = () => {
 	}
 
   return (
-    <form id='strainForm' onSubmit={onSubmit}>
+	<form id='strainForm' onSubmit={onSubmit}>
 			<h2 className='mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-primary'>
-        Add Strain
-      </h2>
+		Add Strain
+	  </h2>
 
-      <div className='space-y-12'>
-        <div className='border-b border-gray-900/10 pb-10'>
+	  <div className='space-y-12'>
+		<div className='border-b border-gray-900/10 pb-10'>
 
-          <div className='space-y-12 bg-dimBlack justify-center items-center '>
-            <h4 className='mt-10 font-bold  text-dimWhite px-2 py-2'>
-              Name and Taxonomic Classification
-            </h4>
-          </div>
+		  <div className='space-y-12 bg-dimBlack justify-center items-center '>
+			<h4 className='mt-10 font-bold  text-dimWhite px-2 py-2'>
+			  Name and Taxonomic Classification
+			</h4>
+		  </div>
 
 					<div className='mt-4 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-6'>
 
@@ -267,19 +267,19 @@ const StrainForm = () => {
 									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
 								/>
 						</div>
-          </div>
-        </div>
+		  </div>
+		</div>
 
-        <div className='border-b border-gray-900/10 pb-10'>
-          <div className='space-y-12 bg-dimBlack justify-center items-center '>
-            <h4 className='mt-10 font-bold  text-dimWhite px-2 py-2'>
-              Isolation, sampling, and environmental information
-            </h4>
-          </div>
+		<div className='border-b border-gray-900/10 pb-10'>
+		  <div className='space-y-12 bg-dimBlack justify-center items-center '>
+			<h4 className='mt-10 font-bold  text-dimWhite px-2 py-2'>
+			  Isolation, sampling, and environmental information
+			</h4>
+		  </div>
 
-          <div className='mt-4 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-6'>
-            
-            <div className='sm:col-span-3 sm:col-start-1'>
+		  <div className='mt-4 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-6'>
+			
+			<div className='sm:col-span-3 sm:col-start-1'>
 							<label htmlFor='sampling_site' className='block text-sm font-medium leading-6 text-dimBlack'>
 								Cave/Sampling site
 							</label>
@@ -363,7 +363,7 @@ const StrainForm = () => {
 								/>
 						</div>
 
-            <div className='sm:col-span-3 sm:col-start-1'>
+			<div className='sm:col-span-3 sm:col-start-1'>
 							<label htmlFor='city_province' className='block text-sm font-medium leading-6 text-dimBlack'>
 								City/Province
 							</label>
@@ -378,20 +378,20 @@ const StrainForm = () => {
 						</div>
 
 						<div className='sm:col-span-3'>
-							<label htmlFor='location_abbrv' className='block text-sm font-medium leading-6 text-dimBlack'>
+							<label htmlFor='location_abbr' className='block text-sm font-medium leading-6 text-dimBlack'>
 								Location abbreviation
 							</label>
 								<input
 									type='text'
-									name='location_abbrv'
-									id='location_abbrv'
-									value={location_abbrv}
+									name='location_abbr'
+									id='location_abbr'
+									value={location_abbr}
 									onChange={onChange}
 									className='block w-full rounded-md border-0 py-1.5 text-dimBlack shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6'
 								/>
 						</div>
 
-            <div className='sm:col-span-3 sm:col-start-1'>
+			<div className='sm:col-span-3 sm:col-start-1'>
 							<label htmlFor='location_latitude' className='block text-sm font-medium leading-6 text-dimBlack'>
 								Location latitude
 							</label>
@@ -405,7 +405,7 @@ const StrainForm = () => {
 								/>
 						</div>
 
-            <div className='sm:col-span-3'>
+			<div className='sm:col-span-3'>
 							<label htmlFor='location_longitude' className='block text-sm font-medium leading-6 text-dimBlack'>
 								Location longitude
 							</label>
@@ -439,22 +439,22 @@ const StrainForm = () => {
 								/>
 						</div>
 						
-          </div>
-        </div>
-      </div>
+		  </div>
+		</div>
+	  </div>
 
-      <div className='mt-6 mb-6 flex items-center justify-end gap-x-6'>
-        <button type='button' className='text-sm font-semibold leading-6 text-gray-900'>
-          Cancel
-        </button>
-        <button
-          type='submit'
-          className='rounded-md bg-primary lg:px-6 lg:h-10 sm:h-5 sm:px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-dimBlack focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-        >
-          Add Strain
-        </button>
-      </div>
-    </form>
+	  <div className='mt-6 mb-6 flex items-center justify-end gap-x-6'>
+		<button type='button' className='text-sm font-semibold leading-6 text-gray-900'>
+		  Cancel
+		</button>
+		<button
+		  type='submit'
+		  className='rounded-md bg-primary lg:px-6 lg:h-10 sm:h-5 sm:px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-dimBlack focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+		>
+		  Add Strain
+		</button>
+	  </div>
+	</form>
   )
 }
 

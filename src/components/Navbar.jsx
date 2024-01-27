@@ -43,7 +43,7 @@ export default function Navbar() {
 
   return (
     <div className=''>
-      <header className='absolute inset-x-0 top-0 z-50 border-b border-gray-900/10 border-4'>
+      <header className='absolute inset-x-0 top-0 z-50 border-b border-gray-900/10'>
         <nav className='flex items-center justify-between p-6 lg:px-10' aria-label='Navbar'>
           <div className='flex lg:flex-1'>
 						<Link to='/'>
@@ -76,7 +76,7 @@ export default function Navbar() {
 								onClick={() => setActiveTab(item.value)}
 								className={classNames(
 									activeTab === item.value ? 'text-primary font-bold' : 'text-dimBlack hover:text-primary font-semibold',
-									'px-3 py-2 '
+									'px-3 py-2 lg:text-lg'
 								)}
 							>
 								{item.name}
@@ -89,7 +89,7 @@ export default function Navbar() {
 								onClick={() => setActiveTab('collection')}
                 className={classNames(
 									activeTab === 'collection' ? 'text-primary font-bold' : 'text-dimBlack hover:text-primary font-semibold',
-									'px-3 py-2 '
+									'px-3 py-2 lg:text-lg'
 								)}
               >
 								Collection
@@ -99,16 +99,19 @@ export default function Navbar() {
           </div>
 					{ user ?
 						(
-							<div className='hidden lg:flex lg:flex-1 lg:justify-end'>
-								<UserIcon className='inline-flex mr-1 mt-2 h-5 w-5 text-gray-500 items-center' aria-hidden='true' />
+							<div className='hidden lg:flex lg:flex-1 lg:justify-end ml-1'>
+                <div className='border-l px-2'/>
+								<UserIcon className='inline-flex mr-1 mt-3 h-5 w-5 text-gray-500 items-center' aria-hidden='true' />
                 <h3 className='inline-flex text-gray-500 items-center'>{user.name}</h3>
                 <Link
                   to='/'
-                  type='button'
+                  // type='button'
                   onClick={onLogout}
-                  className='inline-flex ml-2 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-dimBlack'
+                  className='inline-flex ml-2'
                 >
-                  Log out  <span aria-hidden='true'> &rarr;</span>
+                  <Button className='bg-primary normal-case font-semibold text-base lg:text-lg lg:px-4 lg:py-2 hover:bg-dimBlack'>
+                    Log out  <span aria-hidden='true' className='font-semibold'> &rarr;</span>
+                  </Button>
                 </Link>
               </div>
 						) : (	
@@ -116,16 +119,20 @@ export default function Navbar() {
 								<Link
 									to='/signup'
 									type='button'
-									className='inline-flex rounded-lg px-3 py-2 font-semibold text-dimBlack hover:bg-dimBlack hover:text-dimWhite'
+									className='inline-flex'
 								>
-									Sign up
+									<Button variant='text' className='normal-case font-semibold text-base lg:text-lg lg:px-4 lg:py-2 text-dimBlack hover:bg-dimBlack hover:text-dimWhite'>
+                    Sign up
+                  </Button>
 								</Link>
 								<Link
 									type='button'
 									to='/login'
-									className='inline-flex ml-2 bg-primary rounded-lg px-3 py-2 font-semibold text-dimWhite hover:bg-dimBlack '
+									className='inline-flex ml-2'
 								>
-									Log in <span aria-hidden='true'>&rarr;</span>
+									<Button className='bg-primary normal-case font-semibold text-base lg:text-lg px-4 py-2 hover:bg-dimBlack'>
+                    Log in  <span aria-hidden='true' className='font-semibold'> &rarr;</span>
+                  </Button>
 								</Link>
 							</div>
 						)

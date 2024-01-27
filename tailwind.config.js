@@ -16,7 +16,7 @@ module.exports = withMT ({
       },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
-        // sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
     },
 

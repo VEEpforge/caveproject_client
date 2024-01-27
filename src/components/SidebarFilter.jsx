@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from 'react'
 import {
   Button,
   Card,
@@ -12,129 +12,116 @@ import {
   AccordionHeader,
   AccordionBody,
   Select,
-  Option
-} from "@material-tailwind/react"
-import { ChevronDownIcon } from "@heroicons/react/20/solid"
-import { category_1, category_2, category_3 } from "../constants/miso"
+  Option,
+  Input
+} from '@material-tailwind/react'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import { category_1, category_2, category_3 } from '../constants/miso'
+import SelectMISO from './SelectMISO'
 
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const SidebarFilter = () => {
-  const [open, setOpen] = useState(0);
+const SidebarFilter = ({strains, handleFilterData}) => {
 
-  const handleOpen = (value) => {
-    setOpen(open === value ? 0 : value);
-  };
+  const [ data, setData ] = useState(strains)
+  const [ species, setSpecies ] = useState('')
+  const [ speciesList, setSpeciesList ] = useState([])
+  const [ sampling_site, setSamplingSite ] = useState('')
+  const [ sample_type, setSampleType ] = useState('')
+  const [ city_province, setCityProvince ] = useState('')
+  // {handleFilterData(strains)}
+
+  const fetchData = () => {
+    // console.log(value)
+    let result
+
+    // if(name == 'species') {
+      result = data.filter( (item) => {
+        return (
+          // item.strain_name &&
+          item.strain_name?.toLowerCase().includes(species?.toLowerCase()) &&
+          // item.sampling_site &&
+          item.sampling_site?.toLowerCase().includes(sampling_site?.toLowerCase()) &&
+          item.sample_type?.toLowerCase().includes(sample_type?.toLowerCase()) &&
+          item.city_province?.toLowerCase().includes(city_province?.toLowerCase())
+        )
+      })
+      // setData(result)
+    // }    
+    console.log(result)
+  }
   
-  // const openDrawer = () => setOpen(true);
-  // const closeDrawer = () => setOpen(false);
+  const handleChange = (name, value) => {
+    if (name == 'species') setSpecies(value);
+    if (name == 'sampling_site') setSamplingSite(value)
+    if (name == 'sample_type') setSampleType(value)
+    if (name == 'city_province') setCityProvince(value)
+    fetchData();
+  };
+
+  const handleCallback = () => {
+
+  }
   
   return (
     <>
-        <Card className="my-2 w-screen max-w-md h-screen rounded-none shadow-none bg-blue-gray-50">
-          <CardBody>
-            {/* <div className="mb-2 flex items-center gap-4 p-4">
-              <Typography variant="h5" color="blue-gray">
-                Isolation Categories
-              </Typography>
-            </div> */}
-            <List>
-              <Accordion
-                open={open === 1}
-                icon={
-                  <ChevronDownIcon
-                    strokeWidth={2.5}
-                    className={`mx-auto h-4 w-4 transition-transform ${open === 1 ? "rotate-180" : ""}`}
-                  />
-                }
-              >
-                <ListItem className="p-0" selected={open === 1}>
-                  <AccordionHeader onClick={() => handleOpen(1)} className="border-b-0 p-3 hover:bg-blue-gray-100">
-                    <Typography color="blue-gray" className="mr-auto font-semibold leading-5">
-                      Isolation Categories
-                    </Typography>
-                  </AccordionHeader>
-                </ListItem>
-                <AccordionBody className="px-4 bg-white h-full">
-                  <div className="flex flex-col gap-6">
-                    <Select variant='standard' label="Level 1" > 
-                      {
-                        category_1.map( (item) => (
-                          <Option className={item.color_code}>
-                            {item.name}
-                          </Option>
-                        ))
-                      }
-                    </Select>
+      <Card className='my-2 w-screen max-w-md h-screen rounded-none shadow-none border-r-2'>
+        <CardBody className='overflow-y-auto'>
+          <div className='flex items-center'>
+            <Typography variant='h5' color='blue-gray' className='flex-grow justify-start'>
+              Filter Occurences
+            </Typography>
+            <Button variant='outlined' className='justify-end normal-case lg:pr-4 lg:pl-3 lg:py-2.5  border-primary text-primary hover:bg-dimBlack hover:text-dimWhite'>
+              <Typography className='font-semibold text-base'>Submit Filter</Typography>
+            </Button>
+          </div>
+            
+          <div className='flex flex-col gap-6 px-4 py-6 border-b border-blue-gray-100 mb-6'>
+            <Input
+              name='species'
+              size="lg"
+              label="Species"
+              value={species}
+              className='focus:border-none focus:border-0 text-dimBlack'
+              onChange={(e) => handleChange( e.target.name, e.target.value )}
+            />
+            
+            <Input
+              name='sampling_site'
+              size="lg"
+              label="Cave/Sampling site"
+              value={sampling_site}
+              className='focus:border-none'
+              onChange={(e) => handleChange( e.target.name, e.target.value )}
+            />
 
-                    <Select variant='standard' label="Level 2" menuProps={{style:{maxHeight: 100}}}> 
-                      {
-                        category_1.map( (item) => (
-                          <Option className={item.color_code}>
-                            {item.name}
-                          </Option>
-                        ))
-                      }
-                    </Select>
+            <Input
+              name='sample_type'
+              size="lg"
+              label="Sample type"
+              value={sample_type}
+              className='focus:border-none'
+              onChange={(e) => handleChange( e.target.name, e.target.value )}
+            />
 
-                    <Select variant='standard' label="Level 3" lockScroll={true}> 
-                      {
-                        category_1.map( (item) => (
-                          <Option className={item.color_code}>
-                            {item.name}
-                          </Option>
-                        ))
-                      }
-                    </Select>
-                  </div>
-                </AccordionBody>
-              </Accordion>
-              <Accordion
-                open={open === 2}
-                icon={
-                  <ChevronDownIcon
-                    strokeWidth={2.5}
-                    className={`mx-auto h-4 w-4 transition-transform ${open === 2 ? "rotate-180" : ""}`}
-                  />
-                }
-              >
-                <ListItem className="p-0" selected={open === 2}>
-                  <AccordionHeader onClick={() => handleOpen(2)} className="border-b-0 p-3">
-                    <Typography color="blue-gray" className="mr-auto font-normal">
-                      MISO Level 2
-                    </Typography>
-                  </AccordionHeader>
-                </ListItem>
-                <AccordionBody className="py-1">
+            <Input
+              name='city_province'
+              size="lg"
+              label="City/Province"
+              value={city_province}
+              className='focus:border-none'
+              onChange={(e) => handleChange( e.target.name, e.target.value )}
+            />
 
-                </AccordionBody>
-              </Accordion>
-              <Accordion
-                open={open === 3}
-                icon={
-                  <ChevronDownIcon
-                    strokeWidth={2.5}
-                    className={`mx-auto h-4 w-4 transition-transform ${open === 3 ? "rotate-180" : ""}`}
-                  />
-                }
-              >
-                <ListItem className="p-0" selected={open === 3}>
-                  <AccordionHeader onClick={() => handleOpen(3)} className="border-b-0 p-3">
-                    <Typography color="blue-gray" className="mr-auto font-normal">
-                      MISO Level 3
-                    </Typography>
-                  </AccordionHeader>
-                </ListItem>
-                <AccordionBody className="py-1">
-
-                </AccordionBody>
-              </Accordion>
-            </List>
-          </CardBody>
-        </Card>
+          </div>
+          <div className='flex flex-col gap-6 px-4'>
+            <SelectMISO handleCallback={handleCallback} />
+          </div>    
+        </CardBody>
+      </Card>
     </>
   )
 }
