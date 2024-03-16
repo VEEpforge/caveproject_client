@@ -9,29 +9,30 @@ var template = {
 	"children":[]
 }
 
-function generateMisoData (strains) {
-  const misoData = miso
-  var arr = []
+// function generateMisoData (strains) {
+//   const misoData = miso
+//   var arr = []
 
-  strains.map( (item) => {
-    if (item.miso_categories.length != 0) arr.push(item.miso_categories)
-  })
+//   strains.map( (item) => {
+//     if (item.miso_categories.length != 0) arr.push(item.miso_categories)
+//   })
 
-  console.log(arr)
-  console.log(misoData.children[0].name)
+//   console.log(arr)
+//   console.log(misoData.children[0].name)
 
-  return null
-}
+//   return null
+// }
 
 const Metrics = ({strains}) => {
+  // console.log(strains)
 
-  useEffect(() => {
-   generateMisoData(strains)
+  // useEffect(() => {
+  //  generateMisoData(strains)
   //  console.log(strains)
-  },[])
+  // },[])
 
   return (
-    <div className='h-screen w-screen bg-gray-300'>
+    <div className='h-screen w-full bg-gray-300'>
       <ResponsiveSunburst
         data={data}
         margin={{ top: 10, right: 10, bottom: 10, left: 10 }}

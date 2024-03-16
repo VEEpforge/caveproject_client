@@ -2,20 +2,23 @@ import { useSelector } from 'react-redux'
 import { ChevronUpDownIcon, PencilIcon } from '@heroicons/react/20/solid'
 import { Card, CardBody, Typography, Chip, Tooltip, IconButton } from '@material-tailwind/react'
 import { category_1 } from '../../constants/miso'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 
-const tableHead = ['Species', 'Sampling Site | Point', 'Sample Type', 'Location', 'Level 1', 'Level 2', 'Level 3', '' ]
+const tableHead = ['Species', 'Sampling Site | Point', 'Location', 'Sample Type', 'Level 1', 'Level 2', 'Level 3', '' ]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const IsolationTable = (strains) => {
-  const [ data, setData ] = useState(strains.strains)
+const IsolationTable = ({strains}) => {
+  // console.log(strains)
+  // const [ data, setData ] = useState(strains.strains)
+  // const [ data, setData ] = useState(strains)
+  const data = strains
 
   return (
-    <Card className='w-full h-full '>
+    <Card className=''>
       <CardBody className='overflow-scroll px-0'>
         <table className='w-full min-w-full table-auto text-left'>
           <thead>
@@ -40,7 +43,7 @@ const IsolationTable = (strains) => {
           </thead>
           <tbody>
           {
-             data?.map((strain) => (
+              data?.map((strain) => (
                 <tr className='border-b border-blue-gray-100'>
                   <td>
                     <Typography
@@ -57,16 +60,8 @@ const IsolationTable = (strains) => {
                       className="text-base font-normal p-4"
                     >
                       {strain.sampling_site ? strain.sampling_site : ''}
-                      <span> | </span>
-                      {strain.sampling_point ? strain.sampling_point : ''}
-                    </Typography>
-                  </td>
-                  <td>
-                    <Typography
-                      color="blue-gray"
-                      className="text-base font-normal p-4"
-                    >
-                      {strain.sample_type? strain.sample_type: null}
+                      {/* <span> | </span> */}
+                      {strain.sampling_point ? ' | ' + strain.sampling_point : ''}
                     </Typography>
                   </td>
                   <td>
@@ -90,6 +85,14 @@ const IsolationTable = (strains) => {
                       {strain.location_longitude}<span>]</span>
                     </Typography>
                     </div>
+                  </td>
+                  <td>
+                    <Typography
+                      color="blue-gray"
+                      className="text-base font-normal p-4"
+                    >
+                      {strain.sample_type? strain.sample_type: null}
+                    </Typography>
                   </td>
                   <td>
                     <div className='w-max'>

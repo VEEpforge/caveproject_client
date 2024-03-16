@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Button,
   Card,
@@ -15,31 +15,33 @@ import {
   Option,
   Input
 } from '@material-tailwind/react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import { category_1, category_2, category_3 } from '../constants/miso'
-import SelectMISO from './SelectMISO'
-
+import { SelectMISO } from '../../components'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const SidebarFilter = ({strains, handleFilterData}) => {
-  // console.log(strains)
 
-  const [ data, setData ] = useState(strains)
+export default function Sidebar({strains, handleFilterData}) {
+
+	// const [ data, setData ] = useState(strains)
+  const data = strains
   const [ species, setSpecies ] = useState('')
   const [ speciesList, setSpeciesList ] = useState([])
   const [ sampling_site, setSamplingSite ] = useState('')
   const [ sample_type, setSampleType ] = useState('')
   const [ city_province, setCityProvince ] = useState('')
+
+  useEffect(() => {
+    handleFilterData(strains)
+  }, [])
+  
   // {handleFilterData(strains)}
 
   const fetchData = () => {
     // console.log(value)
     let result
 
-    // if(name == 'species') {
       result = data.filter( (item) => {
         return (
           // item.strain_name &&
@@ -53,7 +55,7 @@ const SidebarFilter = ({strains, handleFilterData}) => {
       // setData(result)
     // }    
     console.log(result)
-    handleFilterData(result)
+    handleFilterData(result) 
   }
   
   const handleChange = (name, value) => {
@@ -67,7 +69,7 @@ const SidebarFilter = ({strains, handleFilterData}) => {
   const handleCallback = () => {
 
   }
-  
+
   return (
     <>
       <Card className='my-2 w-screen max-w-md h-screen rounded-none shadow-none border-r-2'>
@@ -76,8 +78,8 @@ const SidebarFilter = ({strains, handleFilterData}) => {
             <Typography variant='h5' color='blue-gray' className='flex-grow justify-start'>
               Filter Occurences
             </Typography>
-            <Button variant='outlined' className='justify-end normal-case lg:pr-4 lg:pl-3 lg:py-2.5  border-primary text-primary hover:bg-dimBlack hover:text-dimWhite'>
-              <Typography className='font-semibold text-base'>Submit Filter</Typography>
+            <Button className='justify-end normal-case lg:pr-4 lg:pl-3 lg:py-2.5  border-primary border-2 bg-transparent text-primary hover:bg-primary hover:text-dimWhite'>
+              <Typography className='font-semibold text-base'>Clear Filter</Typography>
             </Button>
           </div>
             
@@ -87,7 +89,7 @@ const SidebarFilter = ({strains, handleFilterData}) => {
               size="lg"
               label="Species"
               value={species}
-              className='focus:border-none focus:border-0 text-dimBlack'
+              className='focus:border-none text-dimBlack'
               onChange={(e) => handleChange( e.target.name, e.target.value )}
             />
             
@@ -127,5 +129,3 @@ const SidebarFilter = ({strains, handleFilterData}) => {
     </>
   )
 }
-
-export default SidebarFilter

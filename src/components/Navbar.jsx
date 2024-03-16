@@ -66,9 +66,6 @@ export default function Navbar() {
           </div>
           <div className='hidden lg:flex lg:gap-x-12'>
             { navigation.map( (item) => (
-              // <a key={item.name} href={item.href} className='text-sm font-semibold leading-6 text-gray-900'>
-              //   {item.name}
-              // </a>
 							<Link
 								key={item.name}
 								type='button'
@@ -76,8 +73,9 @@ export default function Navbar() {
 								onClick={() => setActiveTab(item.value)}
 								className={classNames(
 									activeTab === item.value ? 'text-primary font-bold' : 'text-dimBlack hover:text-primary font-semibold',
-									'px-3 py-2 lg:text-lg'
+									'px-3 py-2 lg:text-lg focus:text-primary focus:font-bold'
 								)}
+                // className='text-dimBlack hover:text-primary focus:font-bold focus:text-primary font-semibold px-3 py-2 lg:text-lg'
 							>
 								{item.name}
 							</Link>

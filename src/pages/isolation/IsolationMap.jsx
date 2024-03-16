@@ -176,13 +176,13 @@ function Legend ({position}) {
 	)
 }
 
-const IsolationMap = (strains) => {
+const IsolationMap = ({strains}) => {
 	const { user } = useSelector((state) => state.auth)
 
 	const [ open, setOpen ] = useState(true)
 	const toggleOpen = () => setOpen((cur) => !cur)
 
-	const [ data, setData ] = useState(strains.strains)
+	// const [ data, setData ] = useState(strains)
 
 	const [ selected, setSelected ] = useState('')
 
@@ -194,7 +194,7 @@ const IsolationMap = (strains) => {
 					selected ? 
 						<>
 							<span className='text-base font-semibold text-dimBlack'>{selected}</span>
-							<span className='text-base text-dimBlack ml-2'> {data?.filter( (item) => item.city_province?.toLowerCase().includes(selected.toLowerCase())).length} strains</span>
+							<span className='text-base text-dimBlack ml-2'> {strains?.filter( (item) => item.city_province?.toLowerCase().includes(selected.toLowerCase())).length} strains</span>
 						</>
 					:
 					<span className='text-base font-semibold text-dimBlack'>Hover over an area</span>
@@ -232,7 +232,7 @@ const IsolationMap = (strains) => {
 						</LayersControl.Overlay>
 						<LayersControl.Overlay checked name='Heat Map'>
 							<LayerGroup>
-								<PolygonLayer strains={data} setSelected={setSelected} />
+								<PolygonLayer strains={strains} setSelected={setSelected} />
 							</LayerGroup>	
 						</LayersControl.Overlay>
 						<LayersControl.Overlay checked name='Cave Position'>
@@ -242,7 +242,7 @@ const IsolationMap = (strains) => {
 						</LayersControl.Overlay>
 						<LayersControl.Overlay name='Strains'>
 							<LayerGroup>
-								<StrainLayer strains={data} />
+								<StrainLayer strains={strains} />
 							</LayerGroup>
 						</LayersControl.Overlay>
 					</LayersControl>
