@@ -48,7 +48,7 @@ export default function Navbar() {
           <div className='flex lg:flex-1'>
 						<Link to='/'>
               <img
-                className='h-8 w-auto'
+                className='h-12 w-auto'
                 src={Logo}
                 alt='Logo'
               />

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { ResponsiveSunburst } from '@nivo/sunburst'
-import data from '../../../backup/data.json'
-import miso from '../../../backup/misoJSON.json'
+import data from '../../constants/data.json'
+import miso from '../../constants/misoJSON.json'
 
 var template = {
 	"name": "",

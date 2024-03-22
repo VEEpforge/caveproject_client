@@ -1,0 +1,56 @@
+{
+	"name": "miso",
+	"color": "#005740",
+	"children":[
+		{
+			"name": "Environmental", "color": "#81c784",
+			"children":[
+				{
+					"name": "Aquatic", "color": "#81c784",
+					"children":[
+						{ "name": "Cave water", "color": "#81c784" },
+						{ "name": "", "color": "#81c784" }
+					]
+				}
+			]
+		},
+		{
+			"name": "Host", "color": "#ffb74d",
+			"children":[
+				{ "name": "Mammals", "color": "#ffb74d" },
+				{ "name": "", "color": "#81c784" }
+			]
+		},
+		{
+			"name": "Host Body-Site", "color": "#ba68c8",
+			"children":[
+				{
+					"name": "Gastrointestinal tract", "color": "#ba68c8",
+					"children":[
+						{ "name": "Rectum", "color": "#ba68c8" },
+						{ "name": "", "color": "#81c784" }
+					]
+				},
+				{
+					"name": "Organ", "color": "#ba68c8",
+					"children":[
+						{ "name": "Skin, Nail, Hair", "color": "#ba68c8"},
+						{ "name": "", "color": "#81c784" }
+					]
+				}
+			]
+		},
+		{
+			"name": "Host Body Product", "color": "#4db6ac",
+			"children":[
+				{
+					"name": "Gastrointestinal tract", "color": "#4db6ac",
+					"children":[
+						{ "name": "Feces (Stool)", "color": "#4db6ac" },
+						{ "name": "", "color": "#81c784" }
+					]
+				}
+			]
+		}
+	]
+}

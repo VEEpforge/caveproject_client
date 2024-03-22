@@ -79,7 +79,7 @@ const Signup = () => {
         <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
           <Link to='/' >
             <img
-              className='mx-auto h-10 w-auto'
+              className='mx-auto h-14 w-auto'
               src={Logo}
               alt='Logo'
             />

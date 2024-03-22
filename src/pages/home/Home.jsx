@@ -14,7 +14,7 @@ const Home = () => {
 
       <div className='flex h-screen justify-center items-center'>
         <div className=" px-4 lg:px-8 max-w-6xl text-center">
-          <h1 className="text-4xl font-poppins font-semibold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-green-800 to-yellow-300 sm:text-6xl">
+          <h1 className="text-4xl font-poppins font-semibold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-primary to-yellow-500 sm:text-6xl">
             Cave Microbial Culture Collection Information System
           </h1>
           <p className="mt-6 text-lg leading-8 text-dimBlack">
