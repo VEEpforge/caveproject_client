@@ -3,6 +3,7 @@ import 'leaflet/dist/leaflet.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import { provinces } from '../../constants/4AProvincesGeoJSON'
+import { municities } from '../../constants/4AMunicitiesGeoJSON'
 import { caves } from '../../constants/caves'
 import { useState } from 'react'
 import { Control, Icon, divIcon, point } from 'leaflet'
@@ -19,7 +20,7 @@ function getColor(c) {
 										'#ffffcc'	;
 }
 
-function PolygonLayer ({strains, setSelected}) {
+function PolygonLayer ({strains, handleFilterData, setSelected}) {
 	// console.log(strains)
 	
 	return (
@@ -65,10 +66,73 @@ function PolygonLayer ({strains, setSelected}) {
 							});
 						},
 						click: (e) => {
-							setSelected(province.properties.ADM2_EN)
+							handleFilterData(strains?.filter( (strain) => {
+								return (
+									strain.city_province?.toLowerCase().includes(province.properties.ADM2_EN.toLowerCase())
+								)
+							}))
 						}
 					}}
 					key={province.properties.ADM2_EN}
+				/>)
+			})
+		}
+		</>
+	)
+}
+
+function MuncitiesMapLayer ({ strains, setSelected }) {
+	return (
+		<>
+		{
+			municities.features.map((muncity) => {
+				var coordinates;
+				// Polygon
+				if(muncity.geometry.type === 'Polygon') coordinates = muncity.geometry.coordinates[0].map((item) => [item[1], item[0]]);
+				// Multipolygon
+				else coordinates = muncity.geometry.coordinates.map( (coor) => coor[0].map((item) => [item[1], item[0]]))
+
+				const strainCount = strains?.filter( (item) => item.city_province?.toLowerCase().includes(muncity.properties.ADM3_EN.toLowerCase()) && item.city_province?.toLowerCase().includes(muncity.properties.ADM2_EN.toLowerCase())).length
+				
+				return (<Polygon
+					pathOptions={{
+						fillColor: getColor(strainCount),
+						// fillColor: '#168b46',
+						fillOpacity: 0.7,
+						weight: 2,
+						opacity: 1,
+						dashArray: 3,
+						color: 'green'
+					}}
+					positions={coordinates}
+					eventHandlers={{
+						mouseover: (e) => {
+							const layer = e.target;
+							layer.setStyle({
+								dashArray: '',
+								weight: 2,
+								opacity: 1,
+								color: 'black',
+							})
+							setSelected(muncity.properties.ADM3_EN)
+						},
+						mouseout: (e) => {
+							const layer = e.target;
+							layer.setStyle({
+								weight: 2,
+								dashArray: '3',
+								color: 'green',
+							});
+						},
+						click: (e) => {
+							// handleFilterData(strains?.filter( (strain) => {
+							// 	return (
+							// 		strain.city_province?.toLowerCase().includes(province.properties.ADM2_EN.toLowerCase())
+							// 	)
+							// }))
+						}
+					}}
+					key={muncity.properties.ADM2_EN}
 				/>)
 			})
 		}
@@ -176,7 +240,7 @@ function Legend ({position}) {
 	)
 }
 
-const IsolationMap = ({strains}) => {
+const IsolationMap = ({strains, handleFilterData}) => {
 	const { user } = useSelector((state) => state.auth)
 
 	const [ open, setOpen ] = useState(true)
@@ -188,7 +252,7 @@ const IsolationMap = ({strains}) => {
 
 	
   return (
-    <>
+    <div className='h-full w-full'>
 			<div className='bg-dimWhite bg-opacity-50 h-20 w-60 absolute top-7 right-40 flex z-50 items-center justify-center'>
 				{
 					selected ? 
@@ -198,9 +262,10 @@ const IsolationMap = ({strains}) => {
 						</>
 					:
 					<span className='text-base font-semibold text-dimBlack'>Hover over an area</span>
+					// <span className='text-base font-semibold text-dimBlack'>{selected}</span>
 				}
 			</div>
-			<div className='bg-dimWhite bg-opacity-50 rounded-md h-auto w-auto p-4 absolute bottom-5 left-5 flex z-50 items-center justify-center'>
+			{/* <div className='bg-dimWhite bg-opacity-50 rounded-md h-auto w-auto p-4 absolute bottom-9 left-5 flex z-50 items-center justify-center'>
           <div className='block gap-4'>
 						<div className='flex items-center'><div className='flex-col h-7 w-7 bg-[#006837]' /> <span className='flex-col ml-2 text-base text-dimBlack'>50+</span></div>
 						<div className='flex items-center'><div className='flex-col h-7 w-7 bg-[#31a354]' /> <span className='flex-col ml-2 text-base text-dimBlack'>21-49</span></div>
@@ -208,8 +273,8 @@ const IsolationMap = ({strains}) => {
 						<div className='flex items-center'><div className='flex-col h-7 w-7 bg-[#c2e699]' /> <span className='flex-col ml-2 text-base text-dimBlack'>6-10</span></div>
 						<div className='flex items-center'><div className='flex-col h-7 w-7 bg-[#ffffcc]' /> <span className='flex-col ml-2 text-base text-dimBlack'>less 5</span></div>
 					</div>
-      </div>
-			<div className='relative z-10'>
+      </div> */}
+			<div className='relative z-10 w-full h-full'>
 				<MapContainer center={[14.1651, 121.2402]} zoom={15} zoomControl>
 					<TileLayer
 						attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -230,27 +295,45 @@ const IsolationMap = ({strains}) => {
 								</Popup>
 							</Marker>
 						</LayersControl.Overlay>
-						<LayersControl.Overlay checked name='Heat Map'>
+						<LayersControl.Overlay name='Province Heat Map'>
 							<LayerGroup>
-								<PolygonLayer strains={strains} setSelected={setSelected} />
+								<PolygonLayer strains={strains} handleFilterData={handleFilterData} setSelected={setSelected} />
 							</LayerGroup>	
 						</LayersControl.Overlay>
-						<LayersControl.Overlay checked name='Cave Position'>
+						<LayersControl.Overlay checked name='Muncities Heat Map'>
+							<LayerGroup>
+								<MuncitiesMapLayer strains={strains} setSelected={setSelected} />
+							</LayerGroup>	
+						</LayersControl.Overlay>
+						<LayersControl.Overlay name='Cave Position'>
 							<LayerGroup>
 								<CaveLayer />
 							</LayerGroup>
 						</LayersControl.Overlay>
-						<LayersControl.Overlay name='Strains'>
+						<LayersControl.Overlay checked name='Strains'>
 							<LayerGroup>
 								<StrainLayer strains={strains} />
 							</LayerGroup>
 						</LayersControl.Overlay>
 					</LayersControl>
 
+					{/* <LayerGroup position='bottomright'>
+						<div className='bg-dimWhite bg-opacity-50 rounded-md h-auto w-auto p-4 flex z-50 items-center justify-center'>
+							<div className='block gap-4'>
+								<div className='flex items-center'><div className='flex-col h-7 w-7 bg-[#006837]' /> <span className='flex-col ml-2 text-base text-dimBlack'>50+</span></div>
+								<div className='flex items-center'><div className='flex-col h-7 w-7 bg-[#31a354]' /> <span className='flex-col ml-2 text-base text-dimBlack'>21-49</span></div>
+								<div className='flex items-center'><div className='flex-col h-7 w-7 bg-[#78c679]' /> <span className='flex-col ml-2 text-base text-dimBlack'>11-20</span></div>
+								<div className='flex items-center'><div className='flex-col h-7 w-7 bg-[#c2e699]' /> <span className='flex-col ml-2 text-base text-dimBlack'>6-10</span></div>
+								<div className='flex items-center'><div className='flex-col h-7 w-7 bg-[#ffffcc]' /> <span className='flex-col ml-2 text-base text-dimBlack'>less 5</span></div>
+							</div>
+						</div>
+					</LayerGroup> */}
+
 				</MapContainer>
+				
 			</div>
 			
-		</>
+		</div>
   )
 }
 

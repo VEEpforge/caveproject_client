@@ -5,6 +5,7 @@ const initialState = {
   strains: [],
   loading: false,
 	error: null,
+	success: false,
 }
 
 // Add strain
@@ -94,9 +95,11 @@ const strainSlice = createSlice({
 				state.strains.push(action.payload)
 				state.loading = false
 				state.error = null
+				state.success = true
 			})
 			.addCase(addStrain.rejected, (state, action) => {
 				state.loading = false
+				state.success = false
 				state.error = action.payload
 			})
 			.addCase(getAllStrains.pending, (state) => {
@@ -118,9 +121,11 @@ const strainSlice = createSlice({
 				state.strains = action.payload
 				state.loading = false
 				state.error = null
+				state.success = true
 			})
 			.addCase(getStrainByUser.rejected, (state, action) => {
 				state.loading = false
+				state.success = false
 				state.error = action.payload
 			})
 			.addCase(updateStrain.pending, (state) => {
@@ -130,6 +135,7 @@ const strainSlice = createSlice({
 				state.strains = action.payload
 				state.loading = false
 				state.error = null
+				state.success = true
 			})
 			.addCase(updateStrain.rejected, (state, action) => {
 				state.loading = false
@@ -144,9 +150,11 @@ const strainSlice = createSlice({
         )
 				state.loading = false
 				state.error = null
+				state.success = true
 			})
 			.addCase(deleteStrain.rejected, (state, action) => {
 				state.loading = false
+				state.success = false
 				state.error = action.payload
 			})
 	}

@@ -70,6 +70,14 @@ export default function Sidebar({strains, handleFilterData}) {
 
   }
 
+  const onClearClick = () => {
+    setSpecies('')
+    setSamplingSite('')
+    setSampleType('')
+    setCityProvince('')
+    handleFilterData(data)
+  }
+
   return (
     <>
       <Card className='my-2 w-screen max-w-md h-screen rounded-none shadow-none border-r-2'>
@@ -78,7 +86,10 @@ export default function Sidebar({strains, handleFilterData}) {
             <Typography variant='h5' color='blue-gray' className='flex-grow justify-start'>
               Filter Occurences
             </Typography>
-            <Button className='justify-end normal-case lg:pr-4 lg:pl-3 lg:py-2.5  border-primary border-2 bg-transparent text-primary hover:bg-primary hover:text-dimWhite'>
+            <Button
+              className='justify-end normal-case lg:pr-4 lg:pl-3 lg:py-2.5  border-primary border-2 bg-transparent text-primary hover:bg-primary hover:text-dimWhite'
+              onClick={onClearClick}
+            >
               <Typography className='font-semibold text-base'>Clear Filter</Typography>
             </Button>
           </div>

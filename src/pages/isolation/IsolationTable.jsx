@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
 import { ChevronUpDownIcon, PencilIcon } from '@heroicons/react/20/solid'
-import { Card, CardBody, Typography, Chip, Tooltip, IconButton } from '@material-tailwind/react'
+import { Card, CardBody, Typography, Chip, Tooltip, IconButton, CardFooter, Button } from '@material-tailwind/react'
 import { category_1 } from '../../constants/miso'
 import { useEffect, useState } from 'react'
 
@@ -33,7 +33,7 @@ const IsolationTable = ({strains}) => {
                   <Typography className='flex items-center justify-between text-dimWhite gap-2 font-medium leading-5'>
                     {head}{' '}
                       {index < tableHead.length - 4 && (
-                      <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
+                      <ChevronUpDownIcon strokeWidth={2} className='h-4 w-4' />
                     )}
                   </Typography>
                 </th>
@@ -47,17 +47,17 @@ const IsolationTable = ({strains}) => {
                 <tr className='border-b border-blue-gray-100'>
                   <td>
                     <Typography
-                      color="blue-gray"
-                      className="text-base font-normal p-4"
-                      // className="text-sm font-normal"
+                      color='blue-gray'
+                      className='text-base font-normal p-4'
+                      // className='text-sm font-normal'
                     >
                       {strain.strain_name}
                     </Typography>
                   </td>
                   <td>
                     <Typography
-                      color="blue-gray"
-                      className="text-base font-normal p-4"
+                      color='blue-gray'
+                      className='text-base font-normal p-4'
                     >
                       {strain.sampling_site ? strain.sampling_site : ''}
                       {/* <span> | </span> */}
@@ -65,31 +65,31 @@ const IsolationTable = ({strains}) => {
                     </Typography>
                   </td>
                   <td>
-                    <div className="flex flex-col p-4 text-base font-normal">
+                    <div className='flex flex-col p-4 text-base font-normal'>
                     <Typography
-                      color="blue-gray"
-                      className="font-normal flex-col-1"
+                      color='blue-gray'
+                      className='font-normal flex-col-1'
                     >
                       {strain.city_province}
                     </Typography>
                     <Typography
-                      color="blue-gray"
-                      className="font-normal"
+                      color='blue-gray'
+                      className='font-normal'
                     >
-                      <span>[</span>{strain.location_latitude}<span>,</span>
+                      [{strain.location_latitude?.toFixed(4)},{strain.location_longitude?.toFixed(4)}]
                     </Typography>
-                    <Typography
-                      color="blue-gray"
-                      className="font-normal"
+                    {/* <Typography
+                      color='blue-gray'
+                      className='font-normal'
                     >
                       {strain.location_longitude}<span>]</span>
-                    </Typography>
+                    </Typography> */}
                     </div>
                   </td>
                   <td>
                     <Typography
-                      color="blue-gray"
-                      className="text-base font-normal p-4"
+                      color='blue-gray'
+                      className='text-base font-normal p-4'
                     >
                       {strain.sample_type? strain.sample_type: null}
                     </Typography>
@@ -97,8 +97,8 @@ const IsolationTable = ({strains}) => {
                   <td>
                     <div className='w-max'>
                       <Chip
-                        variant="ghost"
-                        size="sm"
+                        variant='ghost'
+                        size='sm'
                         value={strain.miso_categories[0]? strain.miso_categories[0] : null}
                         // color='green'
                         className={classNames( strain.miso_categories[0] ? (category_1.find((item) => {return item.name === strain.miso_categories[0] }).color_code) : null, 'text-dimBlack p-2') }
@@ -108,8 +108,8 @@ const IsolationTable = ({strains}) => {
                   <td>
                     <div className='w-max'>
                       <Chip
-                        variant="ghost"
-                        size="sm"
+                        variant='ghost'
+                        size='sm'
                         value={strain.miso_categories[1]? strain.miso_categories[1] : null}
                         // color='green'
                         className={classNames( strain.miso_categories[0] ? (category_1.find((item) => {return item.name === strain.miso_categories[0] }).color_code) : null, 'text-dimBlack p-2') }
@@ -119,8 +119,8 @@ const IsolationTable = ({strains}) => {
                   <td>
                     <div className='w-max'>
                       <Chip
-                        variant="ghost"
-                        size="sm"
+                        variant='ghost'
+                        size='sm'
                         value={strain.miso_categories[2]? strain.miso_categories[2] : null}
                         // color='green'
                         className={classNames( strain.miso_categories[0] ? (category_1.find((item) => {return item.name === strain.miso_categories[0] }).color_code) : null, 'text-dimBlack p-2') }
@@ -133,6 +133,19 @@ const IsolationTable = ({strains}) => {
           </tbody>
         </table>
       </CardBody>
+      <CardFooter className='flex items-center justify-between border-t border-blue-gray-50 p-4'>
+        <Typography variant='small' color='blue-gray' className='font-normal'>
+          Page 1 of 1
+        </Typography>
+        <div className='flex gap-2'>
+          <Button size='sm' className='normal-case font-semibold text-base bg-transparent border-2 border-dimBlack hover:bg-dimBlack text-dimBlack hover:text-dimWhite'>
+            Previous
+          </Button>
+          <Button size='sm' className='normal-case font-semibold text-base bg-transparent border-2 border-dimBlack hover:bg-dimBlack text-dimBlack hover:text-dimWhite'>
+            Next
+          </Button>
+        </div>
+      </CardFooter>
     </Card>
   )
 }

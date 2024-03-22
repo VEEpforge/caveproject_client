@@ -4,6 +4,7 @@ import { TrashIcon } from '@heroicons/react/24/outline'
 import { deleteStrain } from '../../features/strain/strainSlice'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const DeleteStrain = ({strain}) => {
   const [ open, setOpen ] = useState(false)
@@ -32,6 +33,7 @@ const DeleteStrain = ({strain}) => {
             onClick={ () => {
               dispatch(deleteStrain(strain._id))
               navigate('/strain-collection')
+              toast.success('Successfully deleted strain!')
             } }>
             <span>Delete</span>
           </Button>

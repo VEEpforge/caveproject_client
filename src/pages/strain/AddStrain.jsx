@@ -90,7 +90,7 @@ function SelectMISO ({handleCallback}) {
 }
 
 function AddStrainForm ({handleAdd}) {
-  const { strains, loading, error } = useSelector( (state) => state.strain )
+  const { strains, loading, error, success } = useSelector( (state) => state.strain )
 
 	const [ data, setData ] = useState({
 		strain_name: '',
@@ -156,6 +156,10 @@ function AddStrainForm ({handleAdd}) {
 	    toast.error(error)
 	  }
 
+    if (success) {
+      toast.success('Successfully added strain!')
+    }
+
     // if (strains != [] & strains.length > 0) {
     //   setData({})
     //   document.getElementById('strainForm').reset()
@@ -164,7 +168,7 @@ function AddStrainForm ({handleAdd}) {
     // }
 		
 		// dispatch(reset())
-  }, [ loading, error, strains ])
+  }, [ loading, error, success, strains ])
 
 	const onChange = (e) => {
     setData((prevState) => ({
@@ -202,7 +206,7 @@ function AddStrainForm ({handleAdd}) {
 
 		dispatch(addStrain(strainData))
 
-    if(!error & !loading) toast.success('Successfully added strain!')
+    // if(!error & !loading) toast.success('Successfully added strain!')
 	}
 
   return (

@@ -9,6 +9,7 @@ import { category_1,category_2, category_3 } from '../../constants/miso'
 import { Spinner } from '../../components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 
 function SelectMISO ({handleCallback, misoCategories}) {
@@ -95,7 +96,7 @@ function SelectMISO ({handleCallback, misoCategories}) {
 }
 
 function UpdateStrainForm ({strain, handleUpdate}) {
-  const { strains, loading, error } = useSelector( (state) => state.strain )
+  const { strains, loading, error, success } = useSelector( (state) => state.strain )
 
   const [ data, setData ] = useState({
 		strain_name: strain.strain_name,
@@ -162,8 +163,13 @@ function UpdateStrainForm ({strain, handleUpdate}) {
       toast.error(error)
     }
 
+    if (success) {
+      toast.success('Successfully updated strain!')
+      // navigate('/strain-collection')
+    }
+
     // dispatch(reset())
-  }, [ loading, error ])
+  }, [ loading, error, success, strains ])
 
   const onChange = (e) => {
     setData((prevState) => ({
@@ -201,7 +207,7 @@ function UpdateStrainForm ({strain, handleUpdate}) {
     // console.log('Strain _id: ' + strain._id)
 
 		dispatch(updateStrain([strainData, strain._id]))
-    navigate('/strain-collection')
+    // navigate('/strain-collection')
 	}
 
   return (

@@ -21,7 +21,8 @@ import DeleteStrain from './DeleteStrain';
 import UpdateStrain from './UpdateStrain';
 
 
-function StrainCollectionList (strains) {
+function StrainCollectionList ({strains}) {
+	const data = strains
 
   return (
     <div>
@@ -29,7 +30,7 @@ function StrainCollectionList (strains) {
 				<Card className='w-3/4 bg-transparent'>
 					<List className='hover:bg-none divide-y'>
 						{
-							strains.strains?.map( (strain) => (
+							data?.map( (strain) => (
 								<ListItem ripple={false} className='py-1 pr-1 pl-4' key={strain.strain_name}>
 									<ListItemPrefix>
 										<Checkbox className='text-primary' />
@@ -55,18 +56,32 @@ const StrainCollection = () => {
 	const { strains, loading, error } = useSelector( (state) => state.strain )
 	const dispatch = useDispatch()
 
+	useEffect(() => {
+		dispatch(getStrainByUser())
+	
+		return () => {
+			dispatch(reset())
+			dispatch(getStrainByUser())
+		}
+	}, [dispatch])
+	
+
 
 	useEffect( () => {
 		if(error) {
 			toast.error(error)
 		}
 
-		dispatch(getStrainByUser())
+		if(loading) {
+			<Spinner />
+		}
+
+		// dispatch(getStrainByUser())
 		
-		return () => {
-      dispatch(reset())
-    }
-	}, [ error, dispatch ])
+		// return () => {
+    //   dispatch(reset())
+    // }
+	}, [ error ])
 
 	if (loading) {
     return <Spinner />

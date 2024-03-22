@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navbar, SidebarFilter, Spinner } from '../../components'
 import { Button, Collapse, Tabs, TabsHeader, TabsBody, Tab, TabPanel, ButtonGroup} from '@material-tailwind/react'
-import { IsolationTable, IsolationMap, Krona, Metrics } from './index'
+import { IsolationTable, IsolationMap, Metrics } from './index'
 import { getAllStrains, reset } from '../../features/strain/strainSlice'
 import { toast } from 'react-toastify'
 import Sidebar from './Sidebar'
@@ -61,13 +61,13 @@ const IsolationSource = () => {
   const handleFilterData = (data) => {
 		// setFilteredData(data)
     // dataRef.current = data
-    setFilteredData( prevState => data )
+    setFilteredData( prevState => prevState = data )
 	}
 
   useEffect(() => {
     console.log(filteredData)
     console.log(data)
-    setFilteredData(data)
+    setFilteredData(strains)
   }, [])
 
 
@@ -80,18 +80,18 @@ const IsolationSource = () => {
     {
       label: 'Map',
       value: 'map',
-      body: <IsolationMap strains={strains} handleFilterData={handleFilterData}  />
+      body: <IsolationMap strains={filteredData} handleFilterData={handleFilterData}  />
     },
     {
       label: 'Metrics',
       value: 'metrics',
       body: <Metrics strains={data} />
     },
-    {
-      label: 'Download',
-      value: 'download',
-      body: <Krona />
-    },
+    // {
+    //   label: 'Download',
+    //   value: 'download',
+    //   body: <></>
+    // },
   ]
 
   // console.log(data)
